@@ -13,7 +13,7 @@
     <label>Apresentação da empresa<textarea name="about_text" rows="4"><%= s.about_text %></textarea></label>
     <div class="grid-2">
       <div class="field"><span class="label">Logomarca oficial</span>
-        <% if (s.logo_file_id) { %><img class="thumb-preview" src="/arquivos/<%= s.logo_file_id %>" alt="Logomarca atual"><label class="check"><input type="checkbox" name="remover_logo" value="1"> Remover</label><% } else { %><p><%- include('../partials/pendente') %> <span class="muted small">(o site usa um logotipo provisório)</span></p><% } %>
+        <% if (s.logo_file_id) { %><img class="thumb-preview" src="/arquivos/<%= s.logo_file_id %>" alt="Logomarca atual"><label class="check"><input type="checkbox" name="remover_logo" value="1"> Remover</label><% } else { %><img class="thumb-preview" src="/static/img/logo-quality.png" alt="Logomarca oficial (padrão)"><p class="muted small">Logomarca oficial padrão. Envie um arquivo apenas se quiser substituí-la.</p><% } %>
         <input type="file" name="logo" accept="image/png,image/jpeg,image/webp"></div>
       <div class="field"><span class="label">Imagem de destaque do site</span>
         <% if (s.hero_file_id) { %><img class="thumb-preview" src="/arquivos/<%= s.hero_file_id %>" alt="Imagem atual"><label class="check"><input type="checkbox" name="remover_imagem_destaque" value="1"> Remover</label><% } else { %><p class="muted small">Usando ilustração padrão de autopeças. Recomenda-se uma foto da loja ou do balcão de atendimento.</p><% } %>
