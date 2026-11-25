@@ -10,9 +10,9 @@ const DEFAULT_SETTINGS = {
     'A Quality Import Peças atua no segmento de autopeças oferecendo componentes de qualidade para manutenção ' +
     'preventiva e corretiva de veículos. Nossa equipe ajuda você a encontrar a peça certa, com orientação ' +
     'técnica e atendimento próximo em nossas lojas.',
-  whatsapp_number: '',
+  whatsapp_number: '(81) 2119-0161',
   whatsapp_message: 'Olá! Gostaria de solicitar um orçamento de peças.',
-  contact_email: '',
+  contact_email: 'contato@qualityimport.net.br',
   contact_phone: '',
   instagram_url: '',
   facebook_url: '',

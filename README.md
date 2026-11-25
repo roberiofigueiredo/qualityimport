@@ -75,6 +75,6 @@ A conta desativada perde o acesso na hora: a sessão é validada no banco a cada
 
 ## Dados pendentes de cadastro
 
-A logomarca oficial já está aplicada (`public/img/logo-quality.png`; a TI pode trocá-la em **Administração › Site público**). Endereços, telefones, WhatsApp, CNPJ e redes sociais **não foram fornecidos**. Eles ficam configuráveis pela TI em **Administração › Site público** e **Administração › Filiais**; enquanto estiverem vazios, o site mostra “Pendente de cadastro”. As linhas de autopeças iniciais são sugestões editáveis em **Administração › Linhas de peças**. As ilustrações do site são provisórias; a TI pode enviar uma foto real da loja como “Imagem de destaque”.
+A logomarca oficial já está aplicada (`public/img/logo-quality.png`; a TI pode trocá-la em **Administração › Site público**). O WhatsApp comercial (81) 2119-0161 e o e-mail contato@qualityimport.net.br já vêm preenchidos. Endereços das lojas, telefones, CNPJ e redes sociais **não foram fornecidos**. Eles ficam configuráveis pela TI em **Administração › Site público** e **Administração › Filiais**; enquanto estiverem vazios, o site mostra “Pendente de cadastro”. As linhas de autopeças iniciais são sugestões editáveis em **Administração › Linhas de peças**. As ilustrações do site são provisórias; a TI pode enviar uma foto real da loja como “Imagem de destaque”.
 
 Instruções rápidas: [docs/PRIMEIROS-PASSOS.md](docs/PRIMEIROS-PASSOS.md).

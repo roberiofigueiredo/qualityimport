@@ -129,11 +129,19 @@ test('Cenário 1: visitante encontra a filial desejada e abre o canal de orçame
   assert.match(orc.headers.location, /^https:\/\/wa\.me\/5585999991111\?text=/);
   assert.match(decodeURIComponent(orc.headers.location), /Loja: Loja Centro/);
 
-  // loja sem WhatsApp e sem número geral: canal pendente de cadastro, com alternativas
+  // loja sem WhatsApp próprio usa o WhatsApp comercial geral (dado oficial)
+  const geral = await request(app).get('/orcamento').query({ filial: ids.aldeota });
+  assert.equal(geral.status, 302);
+  assert.match(geral.headers.location, /^https:\/\/wa\.me\/558121190161\?text=/);
+  assert.match(home.text, /contato@qualityimport\.net\.br/);
+
+  // sem nenhum número cadastrado: canal pendente de cadastro, com alternativas
+  db.prepare("UPDATE settings SET value = '' WHERE key = 'whatsapp_number'").run();
   const pend = await request(app).get('/orcamento').query({ filial: ids.aldeota });
   assert.equal(pend.status, 200);
   assert.match(pend.text, /Pendente de cadastro/);
   assert.match(pend.text, /Loja Centro/);
+  db.prepare("UPDATE settings SET value = '(81) 2119-0161' WHERE key = 'whatsapp_number'").run();
 });
 
 // ---------------------------------------------------------------------------------------------
