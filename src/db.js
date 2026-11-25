@@ -13,10 +13,10 @@ const DEFAULT_SETTINGS = {
   whatsapp_number: '(81) 2119-0161',
   whatsapp_message: 'Olá! Gostaria de solicitar um orçamento de peças.',
   contact_email: 'contato@qualityimport.net.br',
-  contact_phone: '',
+  contact_phone: '(81) 2119-0161',
   instagram_url: '',
   facebook_url: '',
-  cnpj: '',
+  cnpj: '24.422.016/0001-50',
   logo_file_id: '',
   hero_file_id: '',
 };
@@ -62,8 +62,16 @@ function seedDefaults(db) {
     DEFAULT_LINES.forEach(([n, d, i], idx) => ins.run(n, d, i, idx));
   }
   if (db.prepare('SELECT COUNT(*) c FROM branches').get().c === 0) {
-    // Endereço, telefone, horário e mapa ficam vazios = "Pendente de cadastro".
-    db.prepare('INSERT INTO branches (name, created_at) VALUES (?, ?)').run('Matriz', nowIso());
+    // Matriz com os dados oficiais informados. O mapa é gerado a partir do endereço.
+    db.prepare('INSERT INTO branches (name, city, address, phone, whatsapp, hours, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)').run(
+      'Matriz',
+      'Recife - PE',
+      'Av. Norte Miguel Arraes de Alencar, 1048 - Santo Amaro, Recife - PE',
+      '(81) 2119-0161',
+      '(81) 2119-0161',
+      'Segunda a sexta: 07:00 às 17:00\nSábado: 07:00 às 13:00',
+      nowIso()
+    );
   }
 }
 
