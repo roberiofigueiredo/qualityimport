@@ -94,6 +94,11 @@
     inp.addEventListener('focus', function () { inp.select(); });
   });
 
+  // ---------- Menu do celular: fecha ao escolher uma seção
+  document.querySelectorAll('.mobile-menu').forEach(function (m) {
+    m.addEventListener('click', function (e) { if (e.target.closest('a')) m.open = false; });
+  });
+
   // ---------- Busca instantânea de lojas no site público
   var storeForm = document.querySelector('[data-store-search]');
   if (storeForm) {
