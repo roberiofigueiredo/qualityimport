@@ -25,7 +25,7 @@ function createApp({ db } = {}) {
       'X-Frame-Options': 'SAMEORIGIN',
       'Referrer-Policy': 'same-origin',
       'Content-Security-Policy':
-        "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-ancestors 'self'; form-action 'self' https://wa.me https://api.whatsapp.com",
+        "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-src https://www.google.com; frame-ancestors 'self'; form-action 'self' https://wa.me https://api.whatsapp.com",
     });
     next();
   });

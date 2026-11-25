@@ -10,10 +10,17 @@
       <label>CNPJ<input type="text" name="cnpj" value="<%= s.cnpj %>"></label>
     </div>
     <label>Frase de destaque (topo do site)<input type="text" name="slogan" value="<%= s.slogan %>" maxlength="160"></label>
+    <label>Texto de apoio da frase de destaque<textarea name="subtitle" rows="2"><%= s.subtitle %></textarea></label>
     <label>Apresentação da empresa<textarea name="about_text" rows="4"><%= s.about_text %></textarea></label>
+    <label class="check"><input type="checkbox" name="rede_ancora" value="1" <%= s.rede_ancora === '1' ? 'checked' : '' %>> Mostrar o selo e a seção “Parte da Rede Âncora”</label>
+    <div class="grid-2">
+      <label>Diferenciais <span class="muted small">(um por linha)</span><textarea name="differentials" rows="4"><%= s.differentials %></textarea></label>
+      <label>Números <span class="muted small">(um por linha: valor | descrição)</span><textarea name="stats" rows="4"><%= s.stats %></textarea></label>
+    </div>
+    <label>Observação dos prazos de entrega<input type="text" name="delivery_note" value="<%= s.delivery_note %>"></label>
     <div class="grid-2">
       <div class="field"><span class="label">Logomarca oficial</span>
-        <% if (s.logo_file_id) { %><img class="thumb-preview" src="/arquivos/<%= s.logo_file_id %>" alt="Logomarca atual"><label class="check"><input type="checkbox" name="remover_logo" value="1"> Remover</label><% } else { %><p><%- include('../partials/pendente') %> <span class="muted small">(o site usa um logotipo provisório)</span></p><% } %>
+        <% if (s.logo_file_id) { %><img class="thumb-preview" src="/arquivos/<%= s.logo_file_id %>" alt="Logomarca atual"><label class="check"><input type="checkbox" name="remover_logo" value="1"> Remover</label><% } else { %><img class="thumb-preview" src="/static/img/logo-quality.png" alt="Logomarca oficial (padrão)"><p class="muted small">Logomarca oficial padrão. Envie um arquivo apenas se quiser substituí-la.</p><% } %>
         <input type="file" name="logo" accept="image/png,image/jpeg,image/webp"></div>
       <div class="field"><span class="label">Imagem de destaque do site</span>
         <% if (s.hero_file_id) { %><img class="thumb-preview" src="/arquivos/<%= s.hero_file_id %>" alt="Imagem atual"><label class="check"><input type="checkbox" name="remover_imagem_destaque" value="1"> Remover</label><% } else { %><p class="muted small">Usando ilustração padrão de autopeças. Recomenda-se uma foto da loja ou do balcão de atendimento.</p><% } %>

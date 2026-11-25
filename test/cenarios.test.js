@@ -113,6 +113,14 @@ test('Cenário 1: visitante encontra a filial desejada e abre o canal de orçame
   assert.match(home.text, /Principais linhas de autopeças/);
   // dado oficial não informado aparece como pendente
   assert.match(home.text, /Pendente de cadastro/);
+  // dados oficiais já cadastrados: matriz, filial Abreu e Lima, prazos de entrega e Rede Âncora
+  assert.match(home.text, /Av\. Norte Miguel Arraes de Alencar, 1048/);
+  assert.match(home.text, /Filial Abreu e Lima/);
+  assert.match(home.text, /Prazos de entrega/);
+  assert.match(home.text, /<td>Camaragibe<\/td><td>3h<\/td><td>15:00<\/td><td>11:00<\/td>/);
+  assert.match(home.text, /Fazemos parte da Rede Âncora/);
+  assert.match(home.text, /data-lat="-8\.0441855"/);
+  assert.match(home.text, /CNPJ: 24\.422\.016\/0001-50/);
 
   // busca pela loja
   const busca = await request(app).get('/').query({ busca: 'centro' });
@@ -129,11 +137,19 @@ test('Cenário 1: visitante encontra a filial desejada e abre o canal de orçame
   assert.match(orc.headers.location, /^https:\/\/wa\.me\/5585999991111\?text=/);
   assert.match(decodeURIComponent(orc.headers.location), /Loja: Loja Centro/);
 
-  // loja sem WhatsApp e sem número geral: canal pendente de cadastro, com alternativas
+  // loja sem WhatsApp próprio usa o WhatsApp comercial geral (dado oficial)
+  const geral = await request(app).get('/orcamento').query({ filial: ids.aldeota });
+  assert.equal(geral.status, 302);
+  assert.match(geral.headers.location, /^https:\/\/wa\.me\/558121190161\?text=/);
+  assert.match(home.text, /contato@qualityimport\.net\.br/);
+
+  // sem nenhum número cadastrado: canal pendente de cadastro, com alternativas
+  db.prepare("UPDATE settings SET value = '' WHERE key = 'whatsapp_number'").run();
   const pend = await request(app).get('/orcamento').query({ filial: ids.aldeota });
   assert.equal(pend.status, 200);
   assert.match(pend.text, /Pendente de cadastro/);
   assert.match(pend.text, /Loja Centro/);
+  db.prepare("UPDATE settings SET value = '(81) 2119-0161' WHERE key = 'whatsapp_number'").run();
 });
 
 // ---------------------------------------------------------------------------------------------

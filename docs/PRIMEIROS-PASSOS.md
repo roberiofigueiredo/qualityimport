@@ -13,8 +13,8 @@ O comando pede a senha (mínimo de 8 caracteres, com letras e números). Depois:
 
 1. Inicie o sistema com `npm start` e abra o site.
 2. Clique em **Área do Colaborador** e entre com o e‑mail e a senha criados.
-3. Em **Administração › Site público**, envie a **logomarca oficial** e preencha WhatsApp comercial, telefone, e‑mail, CNPJ e redes sociais.
-4. Em **Administração › Filiais**, renomeie a “Matriz” e cadastre cada loja com endereço, telefone, WhatsApp, horário e link do mapa.
+3. Em **Administração › Site público**, confira a logomarca (a oficial já vem aplicada) e preencha WhatsApp comercial, telefone, e‑mail, CNPJ e redes sociais.
+4. Em **Administração › Filiais**, confira a Matriz (já preenchida) e cadastre as demais lojas com endereço, telefone, WhatsApp, horário e link do mapa.
 5. Confira **Setores** e **Categorias** (já vêm com sugestões).
 6. Em **Administração › Usuários › Cadastrar colaborador**, informe nome, e‑mail, filial, setor e perfil, e deixe marcado **Enviar convite agora**. A pessoa recebe um link (válido por 72 horas) para criar a própria senha — é isso que libera o acesso.
    - Sem SMTP configurado, o link aparece na tela logo após o cadastro e em **Administração › E‑mails**, para você repassar.

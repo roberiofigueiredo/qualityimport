@@ -1,70 +1,186 @@
 <%- include('../partials/head') %>
+<%
+  const ico = {
+    pin: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+    search: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>',
+    gps: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>',
+    user: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>',
+    phone: '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>',
+    mail: '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',
+    wa: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>',
+    check: '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6.5"/></svg>',
+    arrow: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>',
+    anchor: '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21M7 11h10M4 14c0 4 3.6 7 8 7s8-3 8-7"/></svg>',
+    years: '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+    shield: '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5" stroke-linecap="round"/></svg>',
+  };
+  const perkIcons = ['<path d="M3 12l9-9h8v8l-9 9z"/><circle cx="16" cy="8" r="1.5"/>', '<path d="M2 6h12v10H2zM14 10h4l3 3v3h-7"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/>', '<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.3 6L12 16.4 6.6 19.4l1.3-6L3.4 9.3l6-.7z"/>', '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>'];
+  const ancora = settings.rede_ancora === '1';
+  const anos = stats[0] ? stats[0][0] + ' ' + stats[0][1] : '';
+  const socials = [['Instagram', settings.instagram_url, '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>'], ['Facebook', settings.facebook_url, '<path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/>']].filter(function(s){ return s[1]; });
+%>
 <body class="public">
 <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <span class="topbar-info">
+      <% if (settings.contact_phone) { %><a href="<%= h.telLink(settings.contact_phone) %>"><%- ico.phone %> <%= settings.contact_phone %></a><% } %>
+      <% if (settings.contact_email) { %><a class="hide-sm" href="mailto:<%= settings.contact_email %>"><%- ico.mail %> <%= settings.contact_email %></a><% } %>
+    </span>
+    <nav class="topbar-links" aria-label="Links rápidos">
+      <a href="#entregas">Prazos de entrega</a>
+      <a href="/orcamento">Orçamento pelo WhatsApp</a>
+    </nav>
+  </div>
+</div>
+
 <header class="site-header">
   <div class="wrap site-header-inner">
     <a class="brand" href="/"><%- include('../partials/logo') %></a>
     <nav class="site-nav" aria-label="Seções">
-      <a href="#sobre">A empresa</a>
+      <a href="#sobre">Sobre</a>
       <a href="#linhas">Linhas de peças</a>
-      <a href="#lojas">Lojas</a>
+      <% if (deliveryBranches.length) { %><a href="#entregas">Entregas</a><% } %>
+      <a href="#contato">Contato</a>
     </nav>
-    <a class="btn btn-outline btn-sm colab-btn" href="/entrar">
-      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>
-      Área do Colaborador
-    </a>
+    <a class="btn btn-primary btn-sm header-cta" href="#lojas"><%- ico.search %> Encontre uma loja</a>
+    <a class="btn btn-outline btn-sm colab-btn" href="/entrar"><%- ico.user %> Área do Colaborador</a>
+    <details class="mobile-menu">
+      <summary aria-label="Abrir menu"><span></span><span></span><span></span></summary>
+      <nav aria-label="Menu">
+        <a href="/">Início</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#linhas">Linhas de peças</a>
+        <a href="#lojas">Encontre uma loja</a>
+        <% if (deliveryBranches.length) { %><a href="#entregas">Prazos de entrega</a><% } %>
+        <a href="#contato">Contato</a>
+        <a href="/orcamento">Orçamento pelo WhatsApp</a>
+        <a href="/entrar">Área do Colaborador</a>
+      </nav>
+    </details>
   </div>
 </header>
 
 <main id="conteudo">
-  <section class="hero">
-    <div class="wrap hero-inner">
-      <div class="hero-text">
-        <p class="eyebrow">Autopeças para todas as necessidades</p>
-        <h1><%= settings.slogan || settings.company_name %></h1>
-        <p class="lead">Encontre a loja mais próxima ou peça seu orçamento agora mesmo pelo WhatsApp. Nossa equipe ajuda você a encontrar a peça certa.</p>
-        <div class="hero-ctas">
-          <a class="btn btn-whatsapp btn-lg" href="/orcamento" data-track="orcamento-geral">
-            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>
-            Solicitar orçamento pelo WhatsApp
-          </a>
-          <a class="btn btn-light btn-lg" href="#lojas">
-            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
-            Encontrar uma loja
-          </a>
-        </div>
-        <% if (!settings.whatsapp_number) { %><p class="hero-note">WhatsApp comercial: <%- include('../partials/pendente') %></p><% } %>
+  <!-- 1. Localizador de lojas -->
+  <section class="hero hero-finder">
+    <div class="wrap hero-finder-inner">
+      <% if (totalBranches) { %><span class="hero-badge"><%- ico.pin %> <%= totalBranches %> <%= totalBranches > 1 ? 'lojas' : 'loja' %> em Pernambuco</span><% } %>
+      <h1>Encontre a loja <strong><%= settings.company_name %></strong> mais próxima</h1>
+      <p class="lead"><%= settings.subtitle %></p>
+      <form class="finder" method="get" action="/#lojas" role="search" data-store-search>
+        <label class="sr-only" for="busca-loja">Buscar loja por cidade, bairro ou nome</label>
+        <div class="finder-field"><%- ico.pin %><input id="busca-loja" type="search" name="busca" value="<%= busca %>" placeholder="Cidade, bairro ou nome da loja"></div>
+        <button class="btn btn-primary" type="submit"><%- ico.search %> Buscar</button>
+        <button class="btn btn-light" type="button" data-geo hidden><%- ico.gps %> Usar minha localização</button>
+      </form>
+      <div class="hero-ctas">
+        <a class="btn btn-whatsapp btn-lg" href="/orcamento" data-track="orcamento-geral"><%- ico.wa %> Solicitar orçamento pelo WhatsApp</a>
+        <a class="btn btn-ghost-light btn-lg" href="#lojas"><%- ico.pin %> Encontrar uma loja</a>
       </div>
-      <div class="hero-art">
-        <% if (settings.hero_file_id) { %>
-          <img src="/arquivos/<%= settings.hero_file_id %>" alt="Autopeças e atendimento nas lojas <%= settings.company_name %>">
-        <% } else { %>
-          <img src="/static/img/hero-pecas.svg" alt="Ilustração de autopeças: disco de freio, amortecedor, filtro e vela de ignição" width="560" height="420">
-        <% } %>
+      <% if (!settings.whatsapp_number) { %><p class="hero-note">WhatsApp comercial: <%- include('../partials/pendente') %></p><% } %>
+      <ul class="hero-points">
+        <% if (anos) { %><li><%- ico.years %><span><%= anos %></span></li><% } %>
+        <% if (ancora) { %><li><%- ico.anchor %><span>Parte da Rede Âncora</span></li><% } %>
+        <li><%- ico.shield %><span>Qualidade garantida</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="lojas" class="section stores-section">
+    <div class="wrap">
+      <div class="section-head">
+        <div><p class="eyebrow">Nossas lojas</p><h2>Encontre uma loja</h2></div>
+        <p class="muted small" data-store-count><%= branches.length %> de <%= totalBranches %> loja(s)</p>
+      </div>
+      <div class="stores stores-2" data-stores>
+        <% branches.forEach(function(b){
+             const mapUrl = b.map_url || (b.address ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(b.address + (b.city && !b.address.includes(b.city) ? ', ' + b.city : '')) : '');
+        %>
+        <article class="store-card" data-store="<%= [b.name, b.city, b.address].join(' ').toLowerCase() %>" data-city="<%= b.city || '' %>" id="loja-<%= b.id %>"<% if (b.lat != null && b.lng != null) { %> data-lat="<%= b.lat %>" data-lng="<%= b.lng %>"<% } %>>
+          <% if (embeds[b.id]) { %><div class="store-map"><iframe src="<%= embeds[b.id] %>" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa: <%= b.name %>"></iframe></div><% } %>
+          <h3><%= b.name %><% if (b.city) { %> <span class="muted">· <%= b.city %></span><% } %><span class="distance" hidden></span></h3>
+          <dl>
+            <div><dt>Endereço</dt><dd><%= b.address || '' %><% if (!b.address) { %><%- include('../partials/pendente') %><% } %></dd></div>
+            <div><dt>Telefone</dt><dd><% if (b.phone) { %><a href="<%= h.telLink(b.phone) %>"><%= b.phone %></a><% } else { %><%- include('../partials/pendente') %><% } %></dd></div>
+            <div><dt>Horário de atendimento</dt><dd class="pre"><%= b.hours || '' %><% if (!b.hours) { %><%- include('../partials/pendente') %><% } %></dd></div>
+          </dl>
+          <div class="store-actions">
+            <a class="btn btn-whatsapp btn-sm" href="/orcamento?filial=<%= b.id %>">Orçamento nesta loja</a>
+            <% if (mapUrl) { %><a class="btn btn-outline btn-sm" href="<%= mapUrl %>" target="_blank" rel="noopener">Como chegar</a>
+            <% } else { %><span class="btn btn-outline btn-sm disabled" aria-disabled="true">Mapa: pendente de cadastro</span><% } %>
+            <% if (b.delivery_regions) { %><a class="btn btn-ghost btn-sm" href="#entrega-<%= b.id %>">Prazos de entrega</a><% } %>
+          </div>
+        </article>
+        <% }) %>
+        <% if (!branches.length) { %><p class="empty">Nenhuma loja encontrada para essa busca. <a href="/#lojas">Ver todas</a></p><% } %>
       </div>
     </div>
   </section>
 
-  <section id="sobre" class="section">
-    <div class="wrap about">
-      <div class="about-art"><img src="/static/img/atendimento-loja.svg" alt="Ilustração de atendimento no balcão de uma loja de autopeças" width="520" height="380" loading="lazy"></div>
+  <!-- 2. Precisando de autopeças? -->
+  <section class="section section-gray need">
+    <div class="wrap need-inner">
       <div>
-        <p class="eyebrow">Quem somos</p>
-        <h2><%= settings.company_name %></h2>
-        <p class="lead-sm"><%= settings.about_text %></p>
-        <ul class="ticks">
-          <li>Atendimento especializado no balcão e pelo WhatsApp</li>
-          <li>Peças para manutenção preventiva e corretiva</li>
-          <li>Lojas próximas de você</li>
-        </ul>
+        <h2>Precisando de autopeças?</h2>
+        <h3>Peça agora o seu orçamento pelo WhatsApp!</h3>
+        <p>Envie o modelo do veículo e a peça que procura. Respondemos com preço, prazo e a loja mais perto de você.</p>
+        <a class="btn btn-whatsapp btn-lg" href="/orcamento"><%- ico.wa %> Solicitar orçamento pelo WhatsApp</a>
+      </div>
+      <div class="need-art">
+        <% if (settings.hero_file_id) { %><img src="/arquivos/<%= settings.hero_file_id %>" alt="Autopeças e atendimento nas lojas <%= settings.company_name %>">
+        <% } else { %><img src="/static/img/hero-pecas.svg" alt="Ilustração de autopeças: disco de freio, amortecedor, filtro e vela de ignição" width="560" height="420" loading="lazy"><% } %>
+        <img src="/static/img/atendimento-loja.svg" alt="Ilustração de atendimento no balcão de uma loja de autopeças" width="520" height="380" loading="lazy">
       </div>
     </div>
   </section>
 
+  <!-- 3. Sobre e diferenciais (faixa escura) -->
+  <section id="sobre" class="section band">
+    <div class="wrap">
+      <p class="eyebrow-pill"><%- ico.shield %> Quem somos</p>
+      <h2>Por que comprar na <%= settings.company_name %></h2>
+      <p class="band-lead"><%= settings.about_text %></p>
+      <% if (differentials.length) { %>
+      <div class="band-cards">
+        <% differentials.forEach(function(t, i){ const parts = t.split(/\s*[—:]\s*/); %>
+        <div class="band-card"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><%- perkIcons[i % perkIcons.length] %></svg><h3><%= parts[0] %></h3><% if (parts[1]) { %><p><%= parts.slice(1).join(' ') %></p><% } %></div>
+        <% }) %>
+      </div>
+      <% } %>
+      <% if (stats.length) { %><div class="stats stats-dark"><% stats.forEach(function(st){ %><div class="stat"><strong><%= st[0] %></strong><span><%= st[1] %></span></div><% }) %></div><% } %>
+    </div>
+  </section>
+
+  <!-- 4. Checklist + chamada -->
+  <section class="section ready">
+    <div class="wrap ready-inner">
+      <div>
+        <h2>Pronto para encontrar a sua peça?</h2>
+        <ul class="checklist">
+          <% if (anos) { %><li><%- ico.check %><%= anos %> de autopeças</li><% } %>
+          <% if (ancora) { %><li><%- ico.check %>Fazemos parte da Rede Âncora</li><% } %>
+          <li><%- ico.check %>Peças para veículos nacionais e importados</li>
+          <% if (deliveryBranches.length) { %><li><%- ico.check %>Retire na loja ou receba em casa</li><% } %>
+        </ul>
+        <a class="btn btn-primary btn-lg" href="/orcamento">Pedir orçamento <%- ico.arrow %></a>
+      </div>
+      <% if (ancora) { %>
+      <div class="ancora-card">
+        <span class="ancora-icon"><%- ico.anchor %></span>
+        <strong>Rede Âncora</strong>
+        <p>Uma das maiores redes de autopeças do Brasil. Isso significa mais poder de compra, variedade de marcas nacionais e internacionais e preço competitivo para você.</p>
+      </div>
+      <% } %>
+    </div>
+  </section>
+
+  <!-- 5. Linhas de peças -->
   <section id="linhas" class="section section-gray">
     <div class="wrap">
-      <p class="eyebrow center">O que você encontra</p>
       <h2 class="center">Principais linhas de autopeças</h2>
+      <p class="center muted lines-lead">Marcas nacionais e internacionais para carros de passeio, utilitários e importados.</p>
       <div class="lines-grid">
         <% lines.forEach(function(l){ %>
           <article class="line-card">
@@ -77,75 +193,61 @@
     </div>
   </section>
 
-  <section id="lojas" class="section">
+  <!-- 6. Entregas -->
+  <% if (deliveryBranches.length) { %>
+  <section id="entregas" class="section">
     <div class="wrap">
-      <p class="eyebrow center">Nossas filiais</p>
-      <h2 class="center">Encontre uma loja</h2>
-      <form class="store-search" method="get" action="/#lojas" role="search" data-store-search>
-        <label class="sr-only" for="busca-loja">Buscar por bairro, cidade ou nome da loja</label>
-        <input id="busca-loja" type="search" name="busca" value="<%= busca %>" placeholder="Busque por bairro, cidade ou nome da loja">
-        <% if (cities.length > 1) { %>
-        <label class="sr-only" for="cidade">Cidade</label>
-        <select id="cidade" name="cidade">
-          <option value="">Todas as cidades</option>
-          <% cities.forEach(function(c){ %><option <%= c === cidade ? 'selected' : '' %>><%= c %></option><% }) %>
-        </select>
-        <% } %>
-        <button class="btn btn-primary" type="submit">Buscar</button>
-      </form>
-      <p class="muted center small" data-store-count><%= branches.length %> de <%= totalBranches %> loja(s)</p>
-      <div class="stores">
-        <% branches.forEach(function(b){
-             const mapUrl = b.map_url || (b.address ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(b.address + (b.city ? ', ' + b.city : '')) : '');
-        %>
-        <article class="store-card" data-store="<%= [b.name, b.city, b.address].join(' ').toLowerCase() %>" data-city="<%= b.city || '' %>" id="loja-<%= b.id %>">
-          <h3><%= b.name %><% if (b.city) { %> <span class="muted">· <%= b.city %></span><% } %></h3>
-          <dl>
-            <div><dt>Endereço</dt><dd><%= b.address || '' %><% if (!b.address) { %><%- include('../partials/pendente') %><% } %></dd></div>
-            <div><dt>Telefone</dt><dd><% if (b.phone) { %><a href="<%= h.telLink(b.phone) %>"><%= b.phone %></a><% } else { %><%- include('../partials/pendente') %><% } %></dd></div>
-            <div><dt>Horário</dt><dd class="pre"><%= b.hours || '' %><% if (!b.hours) { %><%- include('../partials/pendente') %><% } %></dd></div>
-          </dl>
-          <div class="store-actions">
-            <a class="btn btn-whatsapp btn-sm" href="/orcamento?filial=<%= b.id %>">Orçamento nesta loja</a>
-            <% if (mapUrl) { %><a class="btn btn-outline btn-sm" href="<%= mapUrl %>" target="_blank" rel="noopener">Ver no mapa</a>
-            <% } else { %><span class="btn btn-outline btn-sm disabled" aria-disabled="true">Mapa: pendente de cadastro</span><% } %>
-          </div>
-        </article>
+      <p class="eyebrow center">Retire na loja ou receba em casa</p>
+      <h2 class="center">Prazos de entrega</h2>
+      <div class="delivery-grid">
+        <% deliveryBranches.forEach(function(b){ %>
+        <div class="delivery-card" id="entrega-<%= b.id %>">
+          <h3><%= b.name %></h3>
+          <% if (b.delivery_start) { %><p>Entregas a partir das <%= b.delivery_start %>. Pedidos aceitos até os horários abaixo.</p><% } %>
+          <table>
+            <thead><tr><th>Região</th><th>Prazo médio</th><th>Seg. a sex.</th><th>Sábado</th></tr></thead>
+            <tbody><% b.regions.forEach(function(r){ %><tr><td><%= r[0] %></td><td><%= r[1] %></td><td><%= r[2] || '—' %></td><td><%= r[3] || '—' %></td></tr><% }) %></tbody>
+          </table>
+        </div>
         <% }) %>
-        <% if (!branches.length) { %><p class="empty">Nenhuma loja encontrada para essa busca. <a href="/#lojas">Ver todas</a></p><% } %>
       </div>
+      <% if (settings.delivery_note) { %><p class="muted center small mt-sm"><%= settings.delivery_note %></p><% } %>
     </div>
   </section>
-
-  <section class="cta-strip">
-    <div class="wrap cta-inner">
-      <div><h2>Precisa de uma peça?</h2><p>Envie o modelo do veículo e a peça que procura. Respondemos com o orçamento.</p></div>
-      <a class="btn btn-whatsapp btn-lg" href="/orcamento">Solicitar orçamento pelo WhatsApp</a>
-    </div>
-  </section>
+  <% } %>
 </main>
 
-<footer class="site-footer">
-  <div class="wrap footer-grid">
-    <div>
+<footer class="site-footer" id="contato">
+  <div class="wrap footer-cols">
+    <div class="footer-brand">
       <a class="brand brand-footer" href="/"><%- include('../partials/logo') %></a>
-      <p class="small">CNPJ: <%= settings.cnpj || '' %><% if (!settings.cnpj) { %><%- include('../partials/pendente') %><% } %></p>
+      <p><%= settings.slogan %><% if (ancora) { %> Parte da Rede Âncora.<% } %></p>
+      <% if (settings.contact_email) { %><p><a href="mailto:<%= settings.contact_email %>"><%= settings.contact_email %></a></p><% } %>
+      <div class="socials">
+        <% socials.forEach(function(s){ %><a href="<%= s[1] %>" target="_blank" rel="noopener" aria-label="<%= s[0] %>"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><%- s[2] %></svg></a><% }) %>
+        <% if (!socials.length) { %><span class="small">Redes sociais: <%- include('../partials/pendente') %></span><% } %>
+      </div>
+    </div>
+    <div>
+      <h3>Institucional</h3>
+      <p><a href="#sobre">Sobre a <%= settings.company_name %></a></p>
+      <p><a href="#linhas">Linhas de peças</a></p>
+      <p><a href="/entrar">Área do Colaborador</a></p>
+    </div>
+    <div>
+      <h3>Atendimento</h3>
+      <p><a href="#lojas">Encontre uma loja</a></p>
+      <% if (deliveryBranches.length) { %><p><a href="#entregas">Prazos de entrega</a></p><% } %>
+      <p><a href="/orcamento">Orçamento pelo WhatsApp</a></p>
     </div>
     <div>
       <h3>Contato</h3>
       <p>Telefone: <% if (settings.contact_phone) { %><a href="<%= h.telLink(settings.contact_phone) %>"><%= settings.contact_phone %></a><% } else { %><%- include('../partials/pendente') %><% } %></p>
-      <p>E-mail: <% if (settings.contact_email) { %><a href="mailto:<%= settings.contact_email %>"><%= settings.contact_email %></a><% } else { %><%- include('../partials/pendente') %><% } %></p>
       <p>WhatsApp: <% if (settings.whatsapp_number) { %><a href="/orcamento"><%= settings.whatsapp_number %></a><% } else { %><%- include('../partials/pendente') %><% } %></p>
-    </div>
-    <div>
-      <h3>Redes sociais</h3>
-      <% if (settings.instagram_url) { %><p><a href="<%= settings.instagram_url %>" target="_blank" rel="noopener">Instagram</a></p><% } %>
-      <% if (settings.facebook_url) { %><p><a href="<%= settings.facebook_url %>" target="_blank" rel="noopener">Facebook</a></p><% } %>
-      <% if (!settings.instagram_url && !settings.facebook_url) { %><p><%- include('../partials/pendente') %></p><% } %>
-      <p><a href="/entrar">Área do Colaborador</a></p>
+      <p>E-mail: <% if (settings.contact_email) { %><a href="mailto:<%= settings.contact_email %>"><%= settings.contact_email %></a><% } else { %><%- include('../partials/pendente') %><% } %></p>
     </div>
   </div>
-  <div class="wrap footer-bottom small">© <%= new Date().getFullYear() %> <%= settings.company_name %>. Todos os direitos reservados.</div>
+  <div class="wrap footer-bottom small">© <%= new Date().getFullYear() %> <%= settings.company_name %>. Todos os direitos reservados. CNPJ: <%= settings.cnpj || '' %><% if (!settings.cnpj) { %><%- include('../partials/pendente') %><% } %></div>
 </footer>
 </body>
 </html>

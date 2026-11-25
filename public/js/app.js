@@ -94,6 +94,11 @@
     inp.addEventListener('focus', function () { inp.select(); });
   });
 
+  // ---------- Menu do celular: fecha ao escolher uma seção
+  document.querySelectorAll('.mobile-menu').forEach(function (m) {
+    m.addEventListener('click', function (e) { if (e.target.closest('a')) m.open = false; });
+  });
+
   // ---------- Busca instantânea de lojas no site público
   var storeForm = document.querySelector('[data-store-search]');
   if (storeForm) {
@@ -114,6 +119,40 @@
     };
     input.addEventListener('input', filter);
     if (city) city.addEventListener('change', filter);
+  }
+
+  // ---------- Loja mais próxima (geolocalização do navegador, nada é enviado ao servidor)
+  var geoBtn = document.querySelector('[data-geo]');
+  var storesBox = document.querySelector('[data-stores]');
+  if (geoBtn && storesBox && navigator.geolocation && storesBox.querySelector('[data-lat]')) {
+    geoBtn.hidden = false;
+    var toast = function (msg) {
+      var t = document.querySelector('.toast') || document.body.appendChild(Object.assign(document.createElement('div'), { className: 'toast' }));
+      t.setAttribute('role', 'status'); t.textContent = msg; t.hidden = false;
+      clearTimeout(t._h); t._h = setTimeout(function () { t.hidden = true; }, 4500);
+    };
+    var km = function (a, b, c, d) { var R = 6371, r = Math.PI / 180, x = Math.sin((c - a) * r / 2), y = Math.sin((d - b) * r / 2); return 2 * R * Math.asin(Math.sqrt(x * x + Math.cos(a * r) * Math.cos(c * r) * y * y)); };
+    geoBtn.addEventListener('click', function () {
+      geoBtn.disabled = true;
+      navigator.geolocation.getCurrentPosition(function (pos) {
+        geoBtn.disabled = false;
+        var lat = pos.coords.latitude, lng = pos.coords.longitude;
+        var cards = Array.prototype.slice.call(storesBox.querySelectorAll('.store-card'));
+        var dist = function (c) { return c.dataset.lat ? km(lat, lng, +c.dataset.lat, +c.dataset.lng) : 1e9; };
+        cards.sort(function (a, b) { return dist(a) - dist(b); }).forEach(function (c, k) {
+          var badge = c.querySelector('.distance'), d = dist(c);
+          if (badge && d < 1e9) { badge.textContent = (d < 10 ? d.toFixed(1).replace('.', ',') : Math.round(d)) + ' km'; badge.hidden = false; }
+          c.hidden = false;
+          c.classList.toggle('nearest', k === 0);
+          storesBox.appendChild(c);
+        });
+        toast('Lojas ordenadas da mais próxima para a mais distante.');
+        cards[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, function () {
+        geoBtn.disabled = false;
+        toast('Não foi possível obter sua localização. Busque pelo nome da cidade ou bairro.');
+      }, { timeout: 10000 });
+    });
   }
 
   // ---------- Lightbox da galeria (toque/arraste no celular, setas no teclado)

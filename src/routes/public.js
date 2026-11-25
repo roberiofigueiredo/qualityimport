@@ -1,5 +1,6 @@
 const express = require('express');
-const { waLink } = require('../lib/html');
+const { waLink, safeUrl } = require('../lib/html');
+const { parseLines } = require('../db');
 const { intParam } = require('./guards');
 
 const router = express.Router();
@@ -20,7 +21,14 @@ router.get('/', (req, res) => {
     if (q && ![b.name, b.city, b.address].join(' ').toLowerCase().includes(q)) return false;
     return true;
   });
+  const s = res.locals.settings;
+  const withDelivery = branches
+    .map((b) => ({ ...b, regions: parseLines(b.delivery_regions, 4), embed: safeUrl(b.map_embed).startsWith('https://www.google.com/maps/embed') ? b.map_embed : '' }));
   res.render('public/home', {
+    differentials: parseLines(s.differentials, 1).map((l) => l[0]),
+    stats: parseLines(s.stats, 2),
+    deliveryBranches: withDelivery.filter((b) => b.regions.length),
+    embeds: Object.fromEntries(withDelivery.map((b) => [b.id, b.embed])),
     title: res.locals.settings.company_name,
     branches: filtered,
     totalBranches: branches.length,
