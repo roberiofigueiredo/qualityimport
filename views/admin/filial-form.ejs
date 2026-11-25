@@ -16,6 +16,19 @@
   <label>Horário de atendimento<textarea name="horario" rows="3" placeholder="Seg. a sex.: 08:00 às 18:00&#10;Sábado: 08:00 às 12:00"><%= row.hours || '' %></textarea></label>
   <label>Link do mapa<input type="url" name="mapa" value="<%= row.map_url || '' %>" placeholder="https://maps.google.com/..."></label>
   <p class="hint">Sem link, o site gera automaticamente um link de busca no Google Maps a partir do endereço.</p>
+  <label>Mapa incorporado (opcional)<input type="url" name="mapa_embed" value="<%= row.map_embed || '' %>" placeholder="https://www.google.com/maps/embed?pb=..."></label>
+  <p class="hint">No Google Maps: Compartilhar › Incorporar um mapa › copie só o endereço que está dentro de src="...".</p>
+  <div class="grid-2">
+    <label>Latitude<input type="text" name="lat" value="<%= row.lat ?? '' %>" placeholder="-8.0441855"></label>
+    <label>Longitude<input type="text" name="lng" value="<%= row.lng ?? '' %>" placeholder="-34.8814488"></label>
+  </div>
+  <p class="hint">Usadas no botão “Usar minha localização”, que mostra a loja mais próxima do cliente.</p>
+  <fieldset class="field">
+    <legend>Prazos de entrega</legend>
+    <label>Entregas a partir de<input type="time" name="entrega_inicio" value="<%= row.delivery_start || '' %>" class="input-sm" style="width:140px"></label>
+    <label>Regiões atendidas<textarea name="entrega_regioes" rows="5" placeholder="Recife | 1h30 | 16:00 | 12:00"><%= row.delivery_regions || '' %></textarea></label>
+    <p class="hint">Uma região por linha: <strong>Região | prazo médio | pedidos até (seg. a sex.) | pedidos até (sábado)</strong>. Deixe vazio se a loja não fizer entregas.</p>
+  </fieldset>
   <div class="grid-3">
     <label class="check"><input type="checkbox" name="exibir_no_site" value="1" <%= row.show_on_site ? 'checked' : '' %>> Exibir no site público</label>
     <label class="check"><input type="checkbox" name="ativa" value="1" <%= row.active ? 'checked' : '' %>> Filial ativa</label>

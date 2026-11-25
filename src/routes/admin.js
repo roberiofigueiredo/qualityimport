@@ -302,7 +302,7 @@ router.get('/filiais', (req, res) => {
   res.render('admin/filiais', { title: 'Filiais', rows });
 });
 
-const BRANCH_FIELDS = ['name', 'city', 'address', 'phone', 'whatsapp', 'hours', 'map_url'];
+const BRANCH_FIELDS = ['name', 'city', 'address', 'phone', 'whatsapp', 'hours', 'map_url', 'map_embed', 'lat', 'lng', 'delivery_start', 'delivery_regions'];
 function branchFromBody(b) {
   return {
     name: String(b.nome || '').trim(),
@@ -312,6 +312,11 @@ function branchFromBody(b) {
     whatsapp: String(b.whatsapp || '').trim(),
     hours: String(b.horario || '').trim(),
     map_url: safeUrl(b.mapa),
+    map_embed: String(b.mapa_embed || '').trim().startsWith('https://www.google.com/maps/embed') ? String(b.mapa_embed).trim() : '',
+    lat: b.lat === '' || b.lat == null || isNaN(Number(String(b.lat).replace(',', '.'))) ? null : Number(String(b.lat).replace(',', '.')),
+    lng: b.lng === '' || b.lng == null || isNaN(Number(String(b.lng).replace(',', '.'))) ? null : Number(String(b.lng).replace(',', '.')),
+    delivery_start: String(b.entrega_inicio || '').trim(),
+    delivery_regions: String(b.entrega_regioes || '').trim(),
     show_on_site: b.exibir_no_site === '1' ? 1 : 0,
     active: b.ativa === '1' ? 1 : 0,
     sort_order: Number(b.ordem) || 0,
@@ -336,14 +341,14 @@ function saveBranch(req, res) {
   let bid = id;
   if (existing) {
     db.prepare(
-      'UPDATE branches SET name=@name, city=@city, address=@address, phone=@phone, whatsapp=@whatsapp, hours=@hours, map_url=@map_url, show_on_site=@show_on_site, active=@active, sort_order=@sort_order WHERE id=@id'
+      'UPDATE branches SET name=@name, city=@city, address=@address, phone=@phone, whatsapp=@whatsapp, hours=@hours, map_url=@map_url, map_embed=@map_embed, lat=@lat, lng=@lng, delivery_start=@delivery_start, delivery_regions=@delivery_regions, show_on_site=@show_on_site, active=@active, sort_order=@sort_order WHERE id=@id'
     ).run({ ...v, id });
     const changed = Object.fromEntries([...BRANCH_FIELDS, 'show_on_site', 'active'].filter((k) => (existing[k] ?? '') !== (v[k] ?? '')).map((k) => [k, { de: existing[k], para: v[k] }]));
     audit(db, req.user.id, 'filial.alterada', 'filial', id, changed);
   } else {
     bid = db
       .prepare(
-        'INSERT INTO branches (name, city, address, phone, whatsapp, hours, map_url, show_on_site, active, sort_order, created_at) VALUES (@name, @city, @address, @phone, @whatsapp, @hours, @map_url, @show_on_site, @active, @sort_order, @now)'
+        'INSERT INTO branches (name, city, address, phone, whatsapp, hours, map_url, map_embed, lat, lng, delivery_start, delivery_regions, show_on_site, active, sort_order, created_at) VALUES (@name, @city, @address, @phone, @whatsapp, @hours, @map_url, @map_embed, @lat, @lng, @delivery_start, @delivery_regions, @show_on_site, @active, @sort_order, @now)'
       )
       .run({ ...v, now: nowIso() }).lastInsertRowid;
     audit(db, req.user.id, 'filial.criada', 'filial', bid, { nome: v.name });
@@ -421,7 +426,7 @@ router.post('/linhas', (req, res) => {
 });
 
 // ---------------------------------------------------------------- Configurações do site
-const SETTING_FIELDS = ['company_name', 'slogan', 'about_text', 'whatsapp_number', 'whatsapp_message', 'contact_email', 'contact_phone', 'instagram_url', 'facebook_url', 'cnpj'];
+const SETTING_FIELDS = ['company_name', 'slogan', 'subtitle', 'about_text', 'differentials', 'stats', 'delivery_note', 'whatsapp_number', 'whatsapp_message', 'contact_email', 'contact_phone', 'instagram_url', 'facebook_url', 'cnpj'];
 
 router.get('/configuracoes', (req, res) => {
   res.render('admin/configuracoes', { title: 'Configurações do site', s: getSettings(req.app.locals.db), smtp: smtpConfigured(), error: null });
@@ -445,6 +450,9 @@ router.post(
       if (val !== (before[k] || '')) changed[k] = { de: before[k], para: val };
       setSetting(db, k, val);
     }
+    const ancora = req.body.rede_ancora === '1' ? '1' : '0';
+    if (ancora !== (before.rede_ancora || '')) changed.rede_ancora = { de: before.rede_ancora, para: ancora };
+    setSetting(db, 'rede_ancora', ancora);
     for (const [field, key] of [
       ['logo', 'logo_file_id'],
       ['imagem_destaque', 'hero_file_id'],

@@ -438,3 +438,44 @@ body.auth { background: var(--gray-50); }
 .qi-dialog { border: 0; border-radius: 12px; padding: 1.3rem; max-width: 420px; width: calc(100% - 32px); box-shadow: 0 20px 60px rgba(0,0,0,.3); }
 .qi-dialog::backdrop { background: rgba(7, 29, 61, .55); }
 .qi-dialog .actions-bar { padding-bottom: 0; justify-content: flex-end; }
+
+/* Site público: seções inspiradas na Rede Âncora */
+.hero-badge { display: inline-flex; align-items: center; gap: .5rem; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); color: #e3ecf9; padding: .35rem .8rem; border-radius: 999px; font-size: .85rem; font-weight: 600; }
+.trust { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; margin: 1.4rem 0 0; padding: 0; list-style: none; color: #c9d9f0; font-size: .92rem; }
+.trust li { display: flex; align-items: center; gap: .45rem; }
+.trust svg { flex: none; color: #9cc0f2; }
+.perks { background: #fff; border-bottom: 1px solid var(--gray-200); }
+.perks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: .4rem 1rem; padding: 1.2rem 16px; }
+.perk { display: flex; align-items: center; gap: .8rem; padding: .5rem 0; font-weight: 700; color: var(--blue-950); }
+.perk svg { flex: none; width: 44px; height: 44px; padding: 9px; border-radius: 12px; background: var(--blue-50); color: var(--blue-700); }
+.stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: .8rem; margin-top: 1.4rem; }
+@media (min-width: 560px) { .stats { grid-template-columns: repeat(4, 1fr); } }
+.stat { background: var(--blue-50); border-radius: 12px; padding: .9rem .8rem; text-align: center; }
+.stat strong { display: block; font-size: clamp(1.3rem, 1rem + 1vw, 1.7rem); color: var(--blue-800); line-height: 1.1; }
+.stat span { font-size: .85rem; color: var(--gray-600); }
+.locator-tools { display: flex; flex-wrap: wrap; gap: .6rem; max-width: 760px; margin: 1.5rem auto .5rem; }
+.locator-tools input { flex: 1 1 260px; margin: 0; }
+.stores-2 { grid-template-columns: repeat(auto-fill, minmax(min(100%, 460px), 1fr)); }
+.store-map { margin: -1.2rem -1.2rem 1rem; height: 200px; border-radius: var(--radius) var(--radius) 0 0; overflow: hidden; background: var(--gray-100); }
+.store-map iframe { width: 100%; height: 100%; border: 0; display: block; }
+.distance { display: inline-block; margin-left: .4rem; font-size: .8rem; font-weight: 700; color: var(--green-dark); background: #e3f4ea; padding: .1em .5em; border-radius: 999px; vertical-align: middle; }
+.nearest { outline: 3px solid var(--green); }
+.delivery-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); margin-top: 1.5rem; }
+.delivery-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+.delivery-card h3 { margin: 0; padding: .9rem 1.1rem; background: var(--blue-900); color: #fff; font-size: 1.02rem; }
+.delivery-card p { margin: .7rem 1.1rem; color: var(--gray-600); font-size: .9rem; }
+.delivery-card table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+.delivery-card th, .delivery-card td { padding: .55rem 1.1rem; text-align: left; border-top: 1px solid var(--gray-200); }
+.delivery-card th { background: var(--gray-50); font-size: .76rem; text-transform: uppercase; letter-spacing: .04em; color: var(--gray-600); }
+.delivery-card td:nth-child(2) { font-weight: 700; color: var(--blue-800); }
+.ancora { background: linear-gradient(135deg, #f7f8fa, #eef4fc); border-top: 1px solid var(--gray-200); border-bottom: 1px solid var(--gray-200); }
+.ancora-inner { display: grid; gap: 1.2rem; align-items: center; padding: 2.5rem 16px; }
+@media (min-width: 860px) { .ancora-inner { grid-template-columns: 1fr 1.4fr; } }
+.ancora-mark { display: flex; align-items: center; gap: .9rem; }
+.ancora-mark svg { flex: none; }
+.ancora-mark strong { font-size: 1.35rem; color: var(--blue-950); line-height: 1.2; }
+.ancora p { margin: 0; color: var(--gray-700); }
+.footer-links p { margin: .3rem 0; }
+@media (max-width: 520px) { .delivery-card th, .delivery-card td { padding: .5rem .6rem; } }
+.mt-sm { margin-top: 1rem; }
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--blue-950); color: #fff; padding: .8rem 1.2rem; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.25); z-index: 50; max-width: calc(100% - 32px); text-align: center; }
