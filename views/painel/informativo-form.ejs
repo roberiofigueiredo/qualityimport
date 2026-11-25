@@ -1,0 +1,68 @@
+<%- include('../partials/intranet-top') %>
+<p><a href="/painel/informativos">← Informativos</a></p>
+<div class="page-head">
+  <h1><%= title %></h1>
+  <% if (st) { %><div>Status: <%- include('../partials/status', { st }) %></div><% } %>
+</div>
+<% if (error) { %><div class="alert alert-erro" role="alert"><%= error %></div><% } %>
+<form method="post" action="/painel/informativos<%= row ? '/' + row.id : '' %>" enctype="multipart/form-data" class="form editor-form" data-unsaved>
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <div class="form-grid">
+    <div class="form-main">
+      <label>Título *<input type="text" name="titulo" value="<%= form.titulo %>" required maxlength="200"></label>
+      <label>Resumo <span class="muted small">(aparece na lista e na página inicial)</span><textarea name="resumo" rows="2" maxlength="400"><%= form.resumo %></textarea></label>
+      <div class="field">
+        <span class="label">Texto</span>
+        <div class="editor" data-editor>
+          <div class="editor-toolbar" role="toolbar" aria-label="Formatação">
+            <button type="button" data-cmd="bold" title="Negrito"><strong>N</strong></button>
+            <button type="button" data-cmd="italic" title="Itálico"><em>I</em></button>
+            <button type="button" data-cmd="underline" title="Sublinhado"><u>S</u></button>
+            <button type="button" data-cmd="formatBlock" data-value="h2" title="Título">Título</button>
+            <button type="button" data-cmd="formatBlock" data-value="h3" title="Subtítulo">Subtítulo</button>
+            <button type="button" data-cmd="formatBlock" data-value="p" title="Parágrafo">Parágrafo</button>
+            <button type="button" data-cmd="insertUnorderedList" title="Lista">• Lista</button>
+            <button type="button" data-cmd="insertOrderedList" title="Lista numerada">1. Lista</button>
+            <button type="button" data-cmd="createLink" title="Inserir link">Link</button>
+            <button type="button" data-cmd="removeFormat" title="Limpar formatação">Limpar</button>
+          </div>
+          <div class="editor-area rich" contenteditable="true" aria-label="Texto do informativo"></div>
+          <textarea name="corpo" class="editor-source" rows="10"><%= form.corpo %></textarea>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <span class="label">Imagem de capa</span>
+          <% if (form.cover_file_id) { %>
+            <img class="thumb-preview" src="/arquivos/<%= form.cover_file_id %>" alt="Capa atual">
+            <label class="check"><input type="checkbox" name="remover_capa" value="1"> Remover capa atual</label>
+          <% } %>
+          <input type="file" name="capa" accept="image/jpeg,image/png,image/webp,image/gif">
+        </div>
+        <div class="field">
+          <span class="label">Anexos <span class="muted small">(PDF, Word, Excel, imagens — até 15 MB cada)</span></span>
+          <% if (attachments.length) { %><ul class="file-list"><% attachments.forEach(function(f){ %>
+            <li><a href="/arquivos/<%= f.id %>"><%= f.original_name %></a> <span class="muted small"><%= humanSize(f.size) %></span>
+              <label class="check small"><input type="checkbox" name="remover_anexo" value="<%= f.id %>"> remover</label></li>
+          <% }) %></ul><% } %>
+          <input type="file" name="anexos" multiple>
+        </div>
+      </div>
+    </div>
+    <div class="form-side">
+      <label>Categoria
+        <select name="categoria"><option value="">Sem categoria</option>
+          <% categories.forEach(function(c){ %><option value="<%= c.id %>" <%= Number(form.categoria) === c.id ? 'selected' : '' %>><%= c.name %></option><% }) %>
+        </select></label>
+      <fieldset class="field">
+        <legend>Destaque e leitura</legend>
+        <label class="check"><input type="checkbox" name="destaque" value="1" <%= form.destaque ? 'checked' : '' %>> Destacar como <strong>aviso prioritário</strong></label>
+        <label class="check"><input type="checkbox" name="confirmacao" value="1" <%= form.confirmacao ? 'checked' : '' %>> Solicitar <strong>confirmação de leitura</strong></label>
+      </fieldset>
+      <%- include('../partials/audience-fields') %>
+      <% if (row && row.requires_ack) { %><p><a href="/painel/informativos/<%= row.id %>/leituras">Ver confirmações de leitura →</a></p><% } %>
+    </div>
+  </div>
+  <%- include('../partials/publish-fields', { archiveUrl: row ? '/painel/informativos/' + row.id + '/arquivar' : '' }) %>
+</form>
+<%- include('../partials/intranet-bottom') %>

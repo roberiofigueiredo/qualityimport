@@ -1,0 +1,5 @@
+<a class="album-card" href="/intranet/galeria/<%= a.id %>">
+  <% const cf = a.cover_file || a.first_file; %>
+  <% if (cf) { %><img src="/arquivos/<%= cf %>" alt="" loading="lazy"><% } else { %><span class="album-empty">Sem fotos</span><% } %>
+  <span class="album-info"><strong><%= a.title %></strong><span class="small"><%= d.fmtDate(a.album_date) %> · <%= a.photo_count %> foto(s)</span></span>
+</a>

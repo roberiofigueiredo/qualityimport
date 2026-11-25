@@ -1,0 +1,3 @@
+<% if (flash && flash.message) { %>
+  <div class="alert alert-<%= flash.type === 'erro' ? 'erro' : 'sucesso' %>" role="status"><%= flash.message %></div>
+<% } %>

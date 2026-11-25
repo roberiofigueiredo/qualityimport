@@ -1,0 +1,15 @@
+<%- include('../partials/intranet-top') %>
+<section class="card narrow confirm-card">
+  <h1><%= heading %></h1>
+  <p><%= message %></p>
+  <form method="post" action="<%= action %>" class="form">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <input type="hidden" name="confirmar" value="sim">
+    <% if (extraField) { %><label><%= extraField.label %><input type="text" name="<%= extraField.name %>" maxlength="300"></label><% } %>
+    <div class="actions-bar">
+      <button class="btn btn-danger" type="submit"><%= confirmLabel %></button>
+      <a class="btn btn-ghost" href="<%= back %>">Não, voltar</a>
+    </div>
+  </form>
+</section>
+<%- include('../partials/intranet-bottom') %>

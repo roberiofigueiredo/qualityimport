@@ -1,0 +1,37 @@
+<%- include('../partials/intranet-top') %>
+<h1><%= title %></h1>
+<% if (!pendingOnly) { %>
+<form class="filters" method="get" action="/intranet/informativos" role="search">
+  <label>Palavra-chave<input type="search" name="q" value="<%= f.q %>" placeholder="Ex.: férias, treinamento"></label>
+  <label>Categoria
+    <select name="categoria"><option value="">Todas</option>
+      <% categories.forEach(function(c){ %><option value="<%= c.id %>" <%= f.categoryId === c.id ? 'selected' : '' %>><%= c.name %></option><% }) %>
+    </select></label>
+  <label>De<input type="date" name="de" value="<%= f.from || '' %>"></label>
+  <label>Até<input type="date" name="ate" value="<%= f.to || '' %>"></label>
+  <div class="filters-actions"><button class="btn btn-primary" type="submit">Filtrar</button><a class="btn btn-ghost" href="/intranet/informativos">Limpar</a></div>
+</form>
+<% } else { %>
+<p class="muted">Comunicados que pedem a sua confirmação de leitura.</p>
+<% } %>
+
+<% if (posts.length) { %>
+  <div class="cards"><% posts.forEach(function(p){ %><%- include('../partials/post-card', { p }) %><% }) %></div>
+<% } else { %>
+  <p class="empty"><%= pendingOnly ? 'Tudo em dia! Nenhuma leitura pendente.' : 'Nenhum informativo encontrado.' %></p>
+<% } %>
+<div class="pager">
+  <% const qs = (n) => '?' + new URLSearchParams({ ...query, pagina: n }).toString(); %>
+  <% if (page > 1) { %><a class="btn btn-ghost" href="<%= qs(page-1) %>">← Anteriores</a><% } %>
+  <% if (hasMore) { %><a class="btn btn-ghost" href="<%= qs(page+1) %>">Mais antigos →</a><% } %>
+</div>
+
+<% if (events.length) { %>
+  <h2>Eventos encontrados</h2>
+  <ul class="event-list"><% events.forEach(function(e){ %><%- include('../partials/event-item', { e }) %><% }) %></ul>
+<% } %>
+<% if (albums.length) { %>
+  <h2>Álbuns encontrados</h2>
+  <div class="album-grid"><% albums.forEach(function(a){ %><%- include('../partials/album-card', { a }) %><% }) %></div>
+<% } %>
+<%- include('../partials/intranet-bottom') %>

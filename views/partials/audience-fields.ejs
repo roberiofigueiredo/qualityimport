@@ -1,0 +1,24 @@
+<fieldset class="field audience" data-audience>
+  <legend>Público-alvo</legend>
+  <label class="radio"><input type="radio" name="publico" value="todos" <%= form.publico !== 'selecionado' ? 'checked' : '' %>> Toda a empresa</label>
+  <label class="radio"><input type="radio" name="publico" value="selecionado" <%= form.publico === 'selecionado' ? 'checked' : '' %>> Filiais e/ou setores selecionados</label>
+  <div class="audience-pick" data-audience-pick>
+    <div>
+      <p class="muted small">Filiais</p>
+      <div class="checks">
+      <% branches.forEach(function(b){ %>
+        <label class="check"><input type="checkbox" name="filiais" value="<%= b.id %>" <%= (form.filiais||[]).map(Number).includes(b.id) ? 'checked' : '' %>> <%= b.name %></label>
+      <% }) %>
+      </div>
+    </div>
+    <div>
+      <p class="muted small">Setores</p>
+      <div class="checks">
+      <% sectors.forEach(function(s){ %>
+        <label class="check"><input type="checkbox" name="setores" value="<%= s.id %>" <%= (form.setores||[]).map(Number).includes(s.id) ? 'checked' : '' %>> <%= s.name %></label>
+      <% }) %>
+      </div>
+    </div>
+    <p class="hint">Se escolher filiais e setores, o conteúdo aparece para quem estiver em uma das filiais <strong>e</strong> em um dos setores marcados.</p>
+  </div>
+</fieldset>

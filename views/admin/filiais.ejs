@@ -1,0 +1,19 @@
+<%- include('../partials/intranet-top') %>
+<div class="page-head"><h1>Filiais</h1><a class="btn btn-primary" href="/admin/filiais/nova">+ Nova filial</a></div>
+<p class="muted">As filiais aparecem no site público (seção “Encontre uma loja”) e servem para direcionar conteúdos da intranet. Campos em branco aparecem como “Pendente de cadastro”.</p>
+<div class="table-wrap">
+<table class="table">
+  <thead><tr><th>Filial</th><th>Endereço</th><th>Telefone</th><th>WhatsApp</th><th>No site</th><th>Colaboradores</th></tr></thead>
+  <tbody><% rows.forEach(function(b){ %>
+    <tr class="<%= b.active ? '' : 'is-muted' %>">
+      <td data-label="Filial"><a href="/admin/filiais/<%= b.id %>"><strong><%= b.name %></strong></a><%= b.active ? '' : ' (inativa)' %><br><span class="muted small"><%= b.city || '' %></span></td>
+      <td data-label="Endereço"><%= b.address || '' %><% if (!b.address) { %><%- include('../partials/pendente') %><% } %></td>
+      <td data-label="Telefone"><%= b.phone || '' %><% if (!b.phone) { %><%- include('../partials/pendente') %><% } %></td>
+      <td data-label="WhatsApp"><%= b.whatsapp || '' %><% if (!b.whatsapp) { %><%- include('../partials/pendente') %><% } %></td>
+      <td data-label="No site"><%= b.show_on_site ? 'Sim' : 'Não' %></td>
+      <td data-label="Colaboradores"><%= b.users %></td>
+    </tr>
+  <% }) %></tbody>
+</table>
+</div>
+<%- include('../partials/intranet-bottom') %>

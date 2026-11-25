@@ -1,0 +1,19 @@
+<%- include('../partials/intranet-top') %>
+<h1>Linhas de autopeças</h1>
+<p class="muted">Exibidas na seção “Principais linhas de autopeças” do site público.</p>
+<% const icons = [['motor','Motor'],['freio','Freio'],['suspensao','Suspensão'],['eletrica','Elétrica'],['filtro','Filtro'],['transmissao','Transmissão'],['arrefecimento','Arrefecimento'],['iluminacao','Iluminação']]; %>
+<% rows.concat([{ id: '', name: '', description: '', icon: 'motor', sort_order: rows.length, active: 1 }]).forEach(function(r){ %>
+<form method="post" action="/admin/linhas" class="form card line-form">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <input type="hidden" name="id" value="<%= r.id %>">
+  <h2 class="h3"><%= r.id ? r.name : 'Nova linha' %></h2>
+  <div class="grid-3">
+    <label>Nome<input type="text" name="nome" value="<%= r.name %>" <%= r.id ? 'required' : '' %>></label>
+    <label>Ícone<select name="icone"><% icons.forEach(function(i){ %><option value="<%= i[0] %>" <%= r.icon === i[0] ? 'selected' : '' %>><%= i[1] %></option><% }) %></select></label>
+    <label>Ordem<input type="number" name="ordem" value="<%= r.sort_order %>" class="input-sm"></label>
+  </div>
+  <label>Descrição<input type="text" name="descricao" value="<%= r.description || '' %>"></label>
+  <div class="actions-bar"><label class="check"><input type="checkbox" name="ativo" value="1" <%= r.active ? 'checked' : '' %>> Exibir no site</label><button class="btn btn-secondary btn-sm" type="submit"><%= r.id ? 'Salvar' : 'Adicionar' %></button></div>
+</form>
+<% }) %>
+<%- include('../partials/intranet-bottom') %>

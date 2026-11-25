@@ -1,0 +1,13 @@
+<%- include('top') %>
+<h1>Área do Colaborador</h1>
+<p class="muted">Entre com o e-mail e a senha da sua conta.</p>
+<% if (error) { %><div class="alert alert-erro" role="alert"><%= error %></div><% } %>
+<form method="post" action="/entrar" class="form" novalidate>
+  <input type="hidden" name="volta" value="<%= volta %>">
+  <label>E-mail<input type="email" name="email" value="<%= email %>" autocomplete="username" required autofocus></label>
+  <label>Senha<input type="password" name="senha" autocomplete="current-password" required></label>
+  <button class="btn btn-primary btn-block" type="submit">Entrar</button>
+</form>
+<p class="center"><a href="/esqueci-senha">Esqueci minha senha</a></p>
+<p class="muted small center">Ainda não tem acesso? Solicite à equipe de TI.</p>
+<%- include('bottom') %>

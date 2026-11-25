@@ -1,0 +1,41 @@
+<%- include('../partials/intranet-top') %>
+<p><a href="/painel/calendario">← Calendário</a></p>
+<div class="page-head">
+  <h1><%= title %></h1>
+  <% if (st) { %><div>Status: <%- include('../partials/status', { st }) %></div><% } %>
+</div>
+<% if (row && row.cancelled) { %>
+  <div class="alert alert-erro">Este evento está <strong>cancelado</strong><%= row.cancel_reason ? ' (' + row.cancel_reason + ')' : '' %>. Ele aparece riscado na agenda dos colaboradores.
+    <form method="post" action="/painel/calendario/<%= row.id %>/reativar" class="inline"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn-sm btn-light" type="submit">Desfazer cancelamento</button></form>
+  </div>
+<% } %>
+<% if (error) { %><div class="alert alert-erro" role="alert"><%= error %></div><% } %>
+<form method="post" action="/painel/calendario<%= row ? '/' + row.id : '' %>" class="form" data-unsaved>
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <div class="form-grid">
+    <div class="form-main">
+      <label>Título *<input type="text" name="titulo" value="<%= form.titulo %>" required maxlength="200"></label>
+      <label>Descrição<textarea name="descricao" rows="4"><%= form.descricao %></textarea></label>
+      <div class="grid-3">
+        <label>Data *<input type="date" name="data" value="<%= form.data %>" required></label>
+        <label>Início<input type="time" name="hora_inicio" value="<%= form.hora_inicio %>" step="300"></label>
+        <label>Término<input type="time" name="hora_fim" value="<%= form.hora_fim %>" step="300"></label>
+      </div>
+      <p class="hint">Horários no formato 24 horas (ex.: 14:30). Deixe em branco para evento de dia inteiro.</p>
+      <label>Local<input type="text" name="local" value="<%= form.local %>" maxlength="200" placeholder="Ex.: Sala de treinamento — Matriz"></label>
+      <% if (row && ['publicado','agendado'].includes(row.status)) { %>
+        <p class="hint">Mudanças de data, horário ou local de um evento publicado são avisadas automaticamente na agenda dos colaboradores do público selecionado.</p>
+      <% } %>
+    </div>
+    <div class="form-side"><%- include('../partials/audience-fields') %></div>
+  </div>
+  <%- include('../partials/publish-fields', { archiveUrl: row ? '/painel/calendario/' + row.id + '/arquivar' : '' }) %>
+  <% if (row && !row.cancelled) { %><p><a class="btn btn-danger-ghost" href="/painel/calendario/<%= row.id %>/cancelar">Cancelar evento</a></p><% } %>
+</form>
+<% if (changes.length) { %>
+<section class="block">
+  <h2>Histórico de mudanças comunicadas</h2>
+  <ul class="link-list"><% changes.forEach(function(c){ %><li><%= c.description %> <span class="muted small">— <%= c.user_name || '' %>, <%= d.fmtDateTime(c.created_at) %></span></li><% }) %></ul>
+</section>
+<% } %>
+<%- include('../partials/intranet-bottom') %>

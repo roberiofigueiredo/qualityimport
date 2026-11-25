@@ -1,0 +1,39 @@
+<%- include('../partials/intranet-top') %>
+<%- include('../partials/preview-banner') %>
+<article class="article">
+  <p class="meta">
+    <% if (post.priority) { %><span class="badge badge-priority">Aviso prioritário</span><% } %>
+    <% if (post.category_name) { %><span class="badge"><%= post.category_name %></span><% } %>
+    <span>Publicado em <%= post.starts_at ? d.fmtDateTime(post.starts_at) : '—' %></span>
+    <% if (post.ends_at) { %><span>· Disponível até <%= d.fmtDateTime(post.ends_at) %></span><% } %>
+  </p>
+  <h1><%= post.title %></h1>
+  <% if (post.summary) { %><p class="lead-sm"><%= post.summary %></p><% } %>
+  <% if (post.cover_file_id) { %><img class="article-cover" src="/arquivos/<%= post.cover_file_id %>" alt=""><% } %>
+  <div class="rich"><%- post.body_html %></div>
+
+  <% if (attachments.length) { %>
+  <section class="attachments">
+    <h2>Anexos</h2>
+    <ul><% attachments.forEach(function(f){ %><li><a href="/arquivos/<%= f.id %>"><%= f.original_name %></a> <span class="muted small">(<%= humanSize(f.size) %>)</span></li><% }) %></ul>
+  </section>
+  <% } %>
+
+  <% if (post.requires_ack) { %>
+  <section class="ack-box">
+    <% if (preview) { %>
+      <p>Os colaboradores verão aqui o botão <strong>“Confirmo que li”</strong>.</p>
+    <% } else if (read && read.confirmed_at) { %>
+      <p class="ack ack-ok">✓ Você confirmou a leitura em <%= d.fmtDateTime(read.confirmed_at) %>.</p>
+    <% } else { %>
+      <p><strong>Este comunicado pede a confirmação de leitura.</strong></p>
+      <form method="post" action="/intranet/informativos/<%= post.id %>/confirmar">
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+        <button class="btn btn-primary" type="submit">Confirmo que li</button>
+      </form>
+    <% } %>
+  </section>
+  <% } %>
+  <p class="muted small">Por <%= post.author_name %></p>
+</article>
+<%- include('../partials/intranet-bottom') %>

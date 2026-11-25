@@ -1,0 +1,16 @@
+<%- include('../partials/intranet-top') %>
+<%- include('../partials/preview-banner') %>
+<p><a href="/intranet/galeria">← Galeria</a></p>
+<h1><%= album.title %></h1>
+<p class="muted"><%= d.fmtDate(album.album_date) %> · <%= photos.length %> foto(s)</p>
+<% if (album.description) { %><p class="lead-sm pre"><%= album.description %></p><% } %>
+<div class="photo-grid" data-lightbox>
+  <% photos.forEach(function(ph, i){ %>
+    <figure>
+      <a href="/arquivos/<%= ph.file_id %>" data-lightbox-item data-caption="<%= ph.caption || '' %>"><img src="/arquivos/<%= ph.file_id %>" alt="<%= ph.caption || ('Foto ' + (i+1)) %>" loading="lazy"></a>
+      <% if (ph.caption) { %><figcaption><%= ph.caption %></figcaption><% } %>
+    </figure>
+  <% }) %>
+</div>
+<% if (!photos.length) { %><p class="empty">Este álbum ainda não tem fotos.</p><% } %>
+<%- include('../partials/intranet-bottom') %>

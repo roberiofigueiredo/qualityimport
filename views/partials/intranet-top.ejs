@@ -1,0 +1,50 @@
+<%- include('head') %>
+<body class="intranet">
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="/intranet"><%- include('logo') %><span class="brand-tag">Intranet</span></a>
+    <div class="user-box">
+      <a href="/intranet/perfil" class="user-name" title="Meus dados"><span class="avatar" aria-hidden="true"><%= user.name.trim().charAt(0).toUpperCase() %></span><span class="hide-sm"><%= user.name %><small><%= ROLE_LABELS[user.role] %></small></span></a>
+      <form method="post" action="/sair"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn-ghost btn-sm" type="submit">Sair</button></form>
+    </div>
+  </div>
+  <nav class="mainnav" aria-label="Menu principal">
+    <div class="wrap mainnav-inner">
+      <% const sec = path.startsWith('/painel') ? 'painel' : path.startsWith('/admin') ? 'admin' : ''; %>
+      <a href="/intranet" class="<%= path === '/intranet' || path === '/intranet/' ? 'active' : '' %>">Início</a>
+      <a href="/intranet/informativos" class="<%= path.startsWith('/intranet/informativos') && !query.pendentes ? 'active' : '' %>">Informativos</a>
+      <a href="/intranet/galeria" class="<%= path.startsWith('/intranet/galeria') ? 'active' : '' %>">Galeria</a>
+      <a href="/intranet/calendario" class="<%= path.startsWith('/intranet/calendario') ? 'active' : '' %>">Calendário</a>
+      <% if (typeof pendingCount !== 'undefined') { %>
+      <a href="/intranet/informativos?pendentes=1" class="<%= query.pendentes ? 'active' : '' %>">Leituras pendentes <% if (pendingCount) { %><span class="badge badge-alert"><%= pendingCount %></span><% } %></a>
+      <% } %>
+      <% if (can('editorial')) { %><a href="/painel" class="nav-strong <%= sec === 'painel' ? 'active' : '' %>">Painel do Marketing</a><% } %>
+      <% if (can('admin')) { %><a href="/admin" class="nav-strong <%= sec === 'admin' ? 'active' : '' %>">Administração</a><% } %>
+    </div>
+  </nav>
+  <% if (sec === 'painel') { %>
+  <nav class="subnav" aria-label="Menu do painel">
+    <div class="wrap">
+      <a href="/painel/informativos" class="<%= path.startsWith('/painel/informativos') ? 'active' : '' %>">Informativos</a>
+      <a href="/painel/galeria" class="<%= path.startsWith('/painel/galeria') ? 'active' : '' %>">Galeria de fotos</a>
+      <a href="/painel/calendario" class="<%= path.startsWith('/painel/calendario') ? 'active' : '' %>">Calendário</a>
+    </div>
+  </nav>
+  <% } else if (sec === 'admin') { %>
+  <nav class="subnav" aria-label="Menu de administração">
+    <div class="wrap">
+      <a href="/admin/usuarios" class="<%= path.startsWith('/admin/usuarios') ? 'active' : '' %>">Usuários</a>
+      <a href="/admin/filiais" class="<%= path.startsWith('/admin/filiais') ? 'active' : '' %>">Filiais</a>
+      <a href="/admin/setores" class="<%= path.startsWith('/admin/setores') ? 'active' : '' %>">Setores</a>
+      <a href="/admin/categorias" class="<%= path.startsWith('/admin/categorias') ? 'active' : '' %>">Categorias</a>
+      <a href="/admin/linhas" class="<%= path.startsWith('/admin/linhas') ? 'active' : '' %>">Linhas de peças</a>
+      <a href="/admin/configuracoes" class="<%= path.startsWith('/admin/configuracoes') ? 'active' : '' %>">Site público</a>
+      <a href="/admin/historico" class="<%= path.startsWith('/admin/historico') ? 'active' : '' %>">Histórico</a>
+      <a href="/admin/emails" class="<%= path.startsWith('/admin/emails') ? 'active' : '' %>">E-mails</a>
+    </div>
+  </nav>
+  <% } %>
+</header>
+<main id="conteudo" class="wrap page">
+<%- include('flash') %>

@@ -1,0 +1,17 @@
+<%- include('../partials/intranet-top') %>
+<p><a href="/painel/informativos/<%= post.id %>/editar">← Voltar ao informativo</a></p>
+<h1>Confirmações de leitura</h1>
+<p><strong><%= post.title %></strong> · Público: <%= audience %></p>
+<% const ok = readers.filter(r => r.confirmed_at).length; %>
+<p class="muted"><%= ok %> de <%= readers.length %> colaborador(es) confirmaram a leitura.</p>
+<div class="table-wrap">
+<table class="table">
+  <thead><tr><th>Colaborador</th><th>Filial</th><th>Setor</th><th>Abriu em</th><th>Confirmou em</th></tr></thead>
+  <tbody><% readers.forEach(function(r){ %>
+    <tr><td data-label="Colaborador"><%= r.name %><br><span class="muted small"><%= r.email %></span></td><td data-label="Filial"><%= r.branch_name || '—' %></td><td data-label="Setor"><%= r.sector_name || '—' %></td>
+      <td data-label="Abriu em"><%= r.first_read_at ? d.fmtDateTime(r.first_read_at) : '—' %></td>
+      <td data-label="Confirmou em"><%- r.confirmed_at ? '<span class="status status-publicado">' + d.fmtDateTime(r.confirmed_at) + '</span>' : '<span class="status status-rascunho">Pendente</span>' %></td></tr>
+  <% }) %></tbody>
+</table>
+</div>
+<%- include('../partials/intranet-bottom') %>

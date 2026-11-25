@@ -1,0 +1,72 @@
+<%- include('../partials/intranet-top') %>
+<div class="home-head">
+  <div>
+    <h1>Olá, <%= user.name.split(' ')[0] %>!</h1>
+    <p class="muted">Hoje é <%= d.fmtLongDate(d.todayLocal()) %>.</p>
+  </div>
+  <form class="searchbar" method="get" action="/intranet/informativos" role="search">
+    <label class="sr-only" for="q">Buscar</label>
+    <input id="q" type="search" name="q" placeholder="Buscar informativos, eventos e álbuns">
+    <select name="categoria" aria-label="Categoria">
+      <option value="">Todas as categorias</option>
+      <% categories.forEach(function(c){ %><option value="<%= c.id %>"><%= c.name %></option><% }) %>
+    </select>
+    <label class="date-filter"><span>De</span><input type="date" name="de" aria-label="Data inicial"></label>
+    <label class="date-filter"><span>Até</span><input type="date" name="ate" aria-label="Data final"></label>
+    <button class="btn btn-primary" type="submit">Buscar</button>
+  </form>
+</div>
+
+<% if (pending.length) { %>
+<section class="panel panel-alert" aria-labelledby="pend-title">
+  <h2 id="pend-title">Você tem <%= pending.length %> comunicado(s) com leitura a confirmar</h2>
+  <ul class="link-list">
+    <% pending.forEach(function(p){ %><li><a href="/intranet/informativos/<%= p.id %>"><%= p.title %></a> <span class="muted small">· <%= d.fmtDate(p.starts_at) %></span></li><% }) %>
+  </ul>
+</section>
+<% } %>
+
+<section class="block" aria-labelledby="avisos-title">
+  <div class="block-head"><h2 id="avisos-title">Avisos prioritários</h2></div>
+  <% if (priority.length) { %>
+    <div class="cards cards-priority"><% priority.forEach(function(p){ %><%- include('../partials/post-card', { p }) %><% }) %></div>
+  <% } else { %><p class="empty">Nenhum aviso prioritário no momento.</p><% } %>
+</section>
+
+<div class="home-grid">
+  <section class="block" aria-labelledby="recentes-title">
+    <div class="block-head"><h2 id="recentes-title">Informativos recentes</h2><a href="/intranet/informativos">Ver todos</a></div>
+    <% if (recent.length) { %>
+      <div class="cards"><% recent.forEach(function(p){ %><%- include('../partials/post-card', { p }) %><% }) %></div>
+    <% } else { %><p class="empty">Nenhum informativo publicado ainda.</p><% } %>
+  </section>
+
+  <aside class="side">
+    <section class="block" aria-labelledby="eventos-title">
+      <div class="block-head"><h2 id="eventos-title">Próximos eventos</h2><a href="/intranet/calendario">Calendário</a></div>
+      <% if (changes.length) { %>
+        <div class="changes">
+          <p class="changes-title">Mudanças na agenda</p>
+          <ul><% changes.forEach(function(c){ %><li><a href="/intranet/calendario/<%= c.event_id %>"><strong><%= c.title %></strong></a>: <%= c.description %> <span class="muted small">(<%= d.fmtDateTime(c.created_at) %>)</span></li><% }) %></ul>
+        </div>
+      <% } %>
+      <% if (events.length) { %>
+        <ul class="event-list"><% events.forEach(function(e){ %><%- include('../partials/event-item', { e }) %><% }) %></ul>
+      <% } else { %><p class="empty">Nenhum evento programado.</p><% } %>
+    </section>
+
+    <section class="block" aria-labelledby="galeria-title">
+      <div class="block-head"><h2 id="galeria-title">Última galeria</h2><a href="/intranet/galeria">Ver galerias</a></div>
+      <% if (album) { %>
+        <a class="album-feature" href="/intranet/galeria/<%= album.id %>">
+          <div class="thumbs">
+            <% albumPhotos.slice(0,4).forEach(function(ph){ %><img src="/arquivos/<%= ph.file_id %>" alt="<%= ph.caption || '' %>" loading="lazy"><% }) %>
+          </div>
+          <strong><%= album.title %></strong>
+          <span class="muted small"><%= d.fmtDate(album.album_date) %> · <%= album.photo_count %> foto(s)</span>
+        </a>
+      <% } else { %><p class="empty">Nenhum álbum publicado ainda.</p><% } %>
+    </section>
+  </aside>
+</div>
+<%- include('../partials/intranet-bottom') %>

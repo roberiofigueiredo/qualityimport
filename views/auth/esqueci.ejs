@@ -1,0 +1,14 @@
+<%- include('top') %>
+<h1>Recuperar senha</h1>
+<% if (sent) { %>
+  <div class="alert alert-sucesso" role="status">Se <strong><%= email %></strong> estiver cadastrado e ativo, você receberá um e-mail com o link para criar uma nova senha. O link vale por 2 horas.</div>
+  <p><a class="btn btn-primary btn-block" href="/entrar">Voltar para o login</a></p>
+<% } else { %>
+  <p class="muted">Informe o e-mail cadastrado. Enviaremos um link para você criar uma nova senha.</p>
+  <form method="post" action="/esqueci-senha" class="form">
+    <label>E-mail<input type="email" name="email" required autofocus autocomplete="username"></label>
+    <button class="btn btn-primary btn-block" type="submit">Enviar link</button>
+  </form>
+  <p class="center"><a href="/entrar">Voltar para o login</a></p>
+<% } %>
+<%- include('bottom') %>

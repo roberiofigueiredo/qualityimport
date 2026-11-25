@@ -1,0 +1,20 @@
+<%- include('../partials/intranet-top') %>
+<div class="page-head"><h1>Galeria de fotos</h1><a class="btn btn-primary" href="/painel/galeria/novo">+ Novo álbum</a></div>
+<%- include('../partials/list-filters') %>
+<div class="table-wrap">
+<table class="table">
+  <thead><tr><th>Álbum</th><th>Data</th><th>Fotos</th><th>Público</th><th>Status</th><th><span class="sr-only">Ações</span></th></tr></thead>
+  <tbody><% rows.forEach(function(r){ %>
+    <tr>
+      <td data-label="Álbum"><a href="/painel/galeria/<%= r.id %>/editar"><strong><%= r.title %></strong></a><br><span class="muted small">Atualizado por <%= r.updated_by_name %> em <%= d.fmtDateTime(r.updated_at) %></span></td>
+      <td data-label="Data"><%= d.fmtDate(r.album_date) %></td>
+      <td data-label="Fotos"><%= r.photo_count %></td>
+      <td data-label="Público"><%= r.audienceText %></td>
+      <td data-label="Status"><%- include('../partials/status', { st: r.st }) %></td>
+      <td class="row-actions"><a href="/painel/galeria/<%= r.id %>/editar">Editar</a> <a href="/painel/galeria/<%= r.id %>/previa">Pré-visualizar</a></td>
+    </tr>
+  <% }) %></tbody>
+</table>
+<% if (!rows.length) { %><p class="empty">Nenhum álbum encontrado. <a href="/painel/galeria/novo">Criar o primeiro</a>.</p><% } %>
+</div>
+<%- include('../partials/intranet-bottom') %>

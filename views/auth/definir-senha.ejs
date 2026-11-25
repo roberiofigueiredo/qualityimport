@@ -1,0 +1,15 @@
+<%- include('top') %>
+<% if (invalid) { %>
+  <h1>Link inválido ou expirado</h1>
+  <p>Este link já foi usado ou passou do prazo. Peça um novo em <a href="/esqueci-senha">Esqueci minha senha</a> ou fale com a equipe de TI.</p>
+<% } else { %>
+  <h1><%= t.kind === 'convite' ? 'Ative seu acesso' : 'Crie uma nova senha' %></h1>
+  <p class="muted">Olá, <strong><%= t.name %></strong> (<%= t.email %>). Crie uma senha com pelo menos 8 caracteres, usando letras e números.</p>
+  <% if (error) { %><div class="alert alert-erro" role="alert"><%= error %></div><% } %>
+  <form method="post" class="form">
+    <label>Nova senha<input type="password" name="senha" minlength="8" autocomplete="new-password" required autofocus></label>
+    <label>Repita a senha<input type="password" name="confirmacao" minlength="8" autocomplete="new-password" required></label>
+    <button class="btn btn-primary btn-block" type="submit"><%= t.kind === 'convite' ? 'Ativar acesso' : 'Salvar nova senha' %></button>
+  </form>
+<% } %>
+<%- include('bottom') %>

@@ -1,0 +1,31 @@
+<%- include('../partials/intranet-top') %>
+<h1>Histórico de alterações</h1>
+<form class="filters" method="get">
+  <label>Autor<select name="usuario"><option value="">Todos</option><% users.forEach(function(u){ %><option value="<%= u.id %>" <%= f.usuario === u.id ? 'selected' : '' %>><%= u.name %></option><% }) %></select></label>
+  <label>Tipo<select name="tipo">
+    <% [['','Todos'],['permissoes','Usuários e permissões'],['conteudo','Conteúdo'],['cadastros','Filiais, setores e site'],['acessos','Entradas e senhas']].forEach(function(o){ %><option value="<%= o[0] %>" <%= f.tipo === o[0] ? 'selected' : '' %>><%= o[1] %></option><% }) %>
+  </select></label>
+  <label>De<input type="date" name="de" value="<%= f.de %>"></label>
+  <label>Até<input type="date" name="ate" value="<%= f.ate %>"></label>
+  <div class="filters-actions"><button class="btn btn-primary" type="submit">Filtrar</button></div>
+</form>
+<div class="table-wrap">
+<table class="table table-compact">
+  <thead><tr><th>Data e hora</th><th>Autor</th><th>Ação</th><th>Item</th><th>Detalhes</th></tr></thead>
+  <tbody><% rows.forEach(function(l){ %>
+    <tr>
+      <td data-label="Data e hora"><%= d.fmtDateTime(l.created_at) %></td>
+      <td data-label="Autor"><%= l.actor || 'Sistema' %></td>
+      <td data-label="Ação"><%= ACTION_LABELS[l.action] || l.action %></td>
+      <td data-label="Item"><%= l.entity_type ? l.entity_type + (l.entity_id ? ' #' + l.entity_id : '') : '—' %></td>
+      <td data-label="Detalhes" class="details"><%= l.details || '' %></td>
+    </tr>
+  <% }) %></tbody>
+</table>
+</div>
+<div class="pager">
+  <% const qs = (n) => '?' + new URLSearchParams({ ...query, pagina: n }).toString(); %>
+  <% if (f.pagina > 1) { %><a class="btn btn-ghost" href="<%= qs(f.pagina-1) %>">← Mais recentes</a><% } %>
+  <% if (hasMore) { %><a class="btn btn-ghost" href="<%= qs(f.pagina+1) %>">Mais antigos →</a><% } %>
+</div>
+<%- include('../partials/intranet-bottom') %>

@@ -1,0 +1,23 @@
+<fieldset class="field">
+  <legend>Período de exibição</legend>
+  <div class="grid-2">
+    <label>Início da exibição <span class="muted small">(opcional para publicar agora)</span>
+      <input type="datetime-local" name="inicio" value="<%= form.inicio %>"></label>
+    <label>Fim da exibição <span class="muted small">(opcional)</span>
+      <input type="datetime-local" name="fim" value="<%= form.fim %>"></label>
+  </div>
+  <p class="hint">Para agendar, preencha o início com uma data futura e clique em “Agendar”.</p>
+</fieldset>
+<div class="actions-bar">
+  <% const live = row && ['publicado','agendado'].includes(row.status); %>
+  <% if (live) { %>
+    <button class="btn btn-primary" type="submit" name="acao" value="salvar">Salvar alterações</button>
+  <% } %>
+  <button class="btn btn-secondary" type="submit" name="acao" value="rascunho" <% if (live) { %>data-confirm="O conteúdo sairá de circulação e voltará a ser rascunho. Continuar?"<% } %>>Salvar rascunho</button>
+  <button class="btn btn-secondary" type="submit" name="acao" value="previsualizar">Pré-visualizar</button>
+  <button class="btn btn-secondary" type="submit" name="acao" value="agendar">Agendar</button>
+  <button class="btn <%= live ? 'btn-secondary' : 'btn-primary' %>" type="submit" name="acao" value="publicar">Publicar</button>
+  <% if (row && row.status !== 'arquivado') { %>
+    <a class="btn btn-danger-ghost" href="<%= archiveUrl %>">Retirar de circulação</a>
+  <% } %>
+</div>

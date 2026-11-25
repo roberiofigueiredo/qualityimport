@@ -1,0 +1,22 @@
+<%- include('../partials/intranet-top') %>
+<h1><%= cfg.title %></h1>
+<p class="muted"><%= cfg.hint %></p>
+<form method="post" action="/admin/<%= slug %>" class="form inline-form card">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <label>Novo(a) <%= cfg.singular %><input type="text" name="nome" required maxlength="80"></label>
+  <button class="btn btn-primary" type="submit">Adicionar</button>
+</form>
+<ul class="simple-list">
+  <% rows.forEach(function(r){ %>
+  <li>
+    <form method="post" action="/admin/<%= slug %>/<%= r.id %>" class="inline-form">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <label class="sr-only" for="n<%= r.id %>">Nome</label>
+      <input id="n<%= r.id %>" type="text" name="nome" value="<%= r.name %>" required maxlength="80">
+      <label class="check"><input type="checkbox" name="ativo" value="1" <%= r.active ? 'checked' : '' %>> Ativo</label>
+      <button class="btn btn-secondary btn-sm" type="submit">Salvar</button>
+    </form>
+  </li>
+  <% }) %>
+</ul>
+<%- include('../partials/intranet-bottom') %>

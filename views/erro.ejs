@@ -1,0 +1,8 @@
+<% if (user) { %><%- include('partials/intranet-top') %><% } else { %><%- include('partials/head') %><body class="simple"><main class="wrap page narrow"><% } %>
+<section class="card center error-page">
+  <p class="error-code"><%= status %></p>
+  <h1><%= title %></h1>
+  <p><%= message %></p>
+  <p><a class="btn btn-primary" href="<%= user ? '/intranet' : '/' %>">Voltar ao início</a></p>
+</section>
+<% if (user) { %><%- include('partials/intranet-bottom') %><% } else { %></main></body></html><% } %>

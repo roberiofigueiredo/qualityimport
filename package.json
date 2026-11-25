@@ -1,0 +1,38 @@
+{
+  "name": "quality-import-pecas",
+  "version": "1.0.0",
+  "description": "Site público e intranet da Quality Import Peças",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "criar-admin": "node scripts/criar-admin.js",
+    "dados-exemplo": "node scripts/dados-exemplo.js",
+    "test": "node --test --test-concurrency=1 test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roberiofigueiredo/qualityimport.git"
+  },
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/roberiofigueiredo/qualityimport/issues"
+  },
+  "homepage": "https://github.com/roberiofigueiredo/qualityimport#readme",
+  "dependencies": {
+    "better-sqlite3": "^13.2.0",
+    "cookie-parser": "^1.4.7",
+    "ejs": "^7.0.2",
+    "express": "^4.22.3",
+    "multer": "^2.5.0",
+    "nodemailer": "^10.6.1",
+    "sanitize-html": "^2.18.2"
+  },
+  "devDependencies": {
+    "supertest": "^7.3.2"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  }
+}

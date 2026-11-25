@@ -1,0 +1,27 @@
+<%- include('../partials/intranet-top') %>
+<h1>Painel do Marketing</h1>
+<p class="muted">Crie e publique conteúdos para os colaboradores. Escolha uma área:</p>
+<div class="tiles">
+  <a class="tile" href="/painel/informativos">
+    <strong>Informativos</strong><span>Avisos, comunicados e notícias</span>
+    <span class="tile-stats"><%= stats.posts.publicado || 0 %> publicado(s) · <%= stats.posts.rascunho || 0 %> rascunho(s) · <%= stats.posts.agendado || 0 %> agendado(s)</span>
+    <span class="btn btn-primary btn-sm">+ Novo informativo</span>
+  </a>
+  <a class="tile" href="/painel/galeria">
+    <strong>Galeria de fotos</strong><span>Álbuns de eventos e campanhas</span>
+    <span class="tile-stats"><%= stats.albums.publicado || 0 %> publicado(s) · <%= stats.albums.rascunho || 0 %> rascunho(s)</span>
+    <span class="btn btn-primary btn-sm">+ Novo álbum</span>
+  </a>
+  <a class="tile" href="/painel/calendario">
+    <strong>Calendário</strong><span>Treinamentos, reuniões e eventos</span>
+    <span class="tile-stats"><%= stats.events.publicado || 0 %> publicado(s) · <%= stats.events.rascunho || 0 %> rascunho(s)</span>
+    <span class="btn btn-primary btn-sm">+ Novo evento</span>
+  </a>
+</div>
+<% if (drafts.length) { %>
+<section class="block">
+  <h2>Rascunhos recentes</h2>
+  <ul class="link-list"><% drafts.forEach(function(r){ %><li><a href="/painel/<%= r.p %>/<%= r.id %>/editar"><%= r.title %></a> <span class="muted small">· editado em <%= d.fmtDateTime(r.updated_at) %></span></li><% }) %></ul>
+</section>
+<% } %>
+<%- include('../partials/intranet-bottom') %>

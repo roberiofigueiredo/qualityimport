@@ -1,0 +1,26 @@
+<%- include('../partials/intranet-top') %>
+<p><a href="/admin/filiais">← Filiais</a></p>
+<h1><%= row.id ? row.name : 'Nova filial' %></h1>
+<% if (error) { %><div class="alert alert-erro"><%= error %></div><% } %>
+<form method="post" action="/admin/filiais<%= row.id ? '/' + row.id : '' %>" class="form card">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <div class="grid-2">
+    <label>Nome da filial *<input type="text" name="nome" value="<%= row.name || '' %>" required></label>
+    <label>Cidade / bairro<input type="text" name="cidade" value="<%= row.city || '' %>" placeholder="Usado no filtro de lojas"></label>
+  </div>
+  <label>Endereço completo<input type="text" name="endereco" value="<%= row.address || '' %>" placeholder="Rua, número, bairro, cidade - UF, CEP"></label>
+  <div class="grid-2">
+    <label>Telefone<input type="tel" name="telefone" value="<%= row.phone || '' %>" placeholder="(00) 0000-0000"></label>
+    <label>WhatsApp para orçamentos<input type="tel" name="whatsapp" value="<%= row.whatsapp || '' %>" placeholder="(00) 90000-0000"></label>
+  </div>
+  <label>Horário de atendimento<textarea name="horario" rows="3" placeholder="Seg. a sex.: 08:00 às 18:00&#10;Sábado: 08:00 às 12:00"><%= row.hours || '' %></textarea></label>
+  <label>Link do mapa<input type="url" name="mapa" value="<%= row.map_url || '' %>" placeholder="https://maps.google.com/..."></label>
+  <p class="hint">Sem link, o site gera automaticamente um link de busca no Google Maps a partir do endereço.</p>
+  <div class="grid-3">
+    <label class="check"><input type="checkbox" name="exibir_no_site" value="1" <%= row.show_on_site ? 'checked' : '' %>> Exibir no site público</label>
+    <label class="check"><input type="checkbox" name="ativa" value="1" <%= row.active ? 'checked' : '' %>> Filial ativa</label>
+    <label>Ordem de exibição<input type="number" name="ordem" value="<%= row.sort_order || 0 %>" class="input-sm"></label>
+  </div>
+  <div class="actions-bar"><button class="btn btn-primary" type="submit">Salvar filial</button></div>
+</form>
+<%- include('../partials/intranet-bottom') %>

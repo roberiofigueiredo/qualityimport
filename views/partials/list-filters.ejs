@@ -1,0 +1,12 @@
+<form class="filters filters-inline" method="get">
+  <% if (typeof view !== 'undefined') { %><input type="hidden" name="visao" value="<%= view %>"><% if (month) { %><input type="hidden" name="mes" value="<%= month.first.slice(0,7) %>"><% } %><% } %>
+  <label>Buscar pelo título<input type="search" name="q" value="<%= filters.q %>"></label>
+  <label>Status
+    <select name="status">
+      <option value="">Todos</option>
+      <% [['rascunho','Rascunho'],['agendado','Agendado'],['publicado','Publicado'],['encerrado','Exibição encerrada'],['arquivado','Arquivado']].concat(typeof withCancel !== 'undefined' ? [['cancelado','Cancelado']] : []).forEach(function(o){ %>
+        <option value="<%= o[0] %>" <%= filters.status === o[0] ? 'selected' : '' %>><%= o[1] %></option>
+      <% }) %>
+    </select></label>
+  <div class="filters-actions"><button class="btn btn-secondary" type="submit">Filtrar</button></div>
+</form>

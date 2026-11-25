@@ -1,0 +1,32 @@
+<%- include('../partials/intranet-top') %>
+<div class="page-head">
+  <h1>Calendário</h1>
+  <div class="page-head-actions">
+    <div class="segmented" role="tablist">
+      <a role="tab" class="<%= view === 'mes' ? 'active' : '' %>" href="?visao=mes">Mês</a>
+      <a role="tab" class="<%= view === 'lista' ? 'active' : '' %>" href="?visao=lista">Lista</a>
+    </div>
+    <a class="btn btn-primary" href="/painel/calendario/novo">+ Novo evento</a>
+  </div>
+</div>
+<%- include('../partials/list-filters', { withCancel: true }) %>
+<% if (view === 'mes') { %>
+  <%- include('../partials/month-grid', { events: rows, eventBase: '/painel/calendario/', eventSuffix: '/editar' }) %>
+<% } %>
+<div class="table-wrap mt">
+<table class="table">
+  <thead><tr><th>Evento</th><th>Data e horário</th><th>Local</th><th>Público</th><th>Status</th><th><span class="sr-only">Ações</span></th></tr></thead>
+  <tbody><% rows.forEach(function(r){ %>
+    <tr class="<%= r.cancelled ? 'is-cancelled' : '' %>">
+      <td data-label="Evento"><a href="/painel/calendario/<%= r.id %>/editar"><strong><%= r.title %></strong></a></td>
+      <td data-label="Data e horário"><%= d.fmtDate(r.event_date) %> · <%= d.fmtTimeRange(r.start_time, r.end_time) %></td>
+      <td data-label="Local"><%= r.location || '—' %></td>
+      <td data-label="Público"><%= r.audienceText %></td>
+      <td data-label="Status"><%- include('../partials/status', { st: r.st }) %></td>
+      <td class="row-actions"><a href="/painel/calendario/<%= r.id %>/editar">Editar</a></td>
+    </tr>
+  <% }) %></tbody>
+</table>
+<% if (!rows.length) { %><p class="empty">Nenhum evento encontrado. <a href="/painel/calendario/novo">Criar evento</a>.</p><% } %>
+</div>
+<%- include('../partials/intranet-bottom') %>

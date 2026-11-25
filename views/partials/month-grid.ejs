@@ -1,0 +1,32 @@
+<div class="month-nav">
+  <a class="btn btn-ghost btn-sm" href="?visao=mes&mes=<%= month.prev %>" aria-label="Mês anterior">←</a>
+  <h2><%= month.label.charAt(0).toUpperCase() + month.label.slice(1) %></h2>
+  <a class="btn btn-ghost btn-sm" href="?visao=mes&mes=<%= month.next %>" aria-label="Próximo mês">→</a>
+</div>
+<div class="month" role="table" aria-label="Calendário do mês">
+  <div class="month-row month-head" role="row"><% d.WEEKDAYS_SHORT.forEach(function(w){ %><div role="columnheader"><%= w %></div><% }) %></div>
+  <%
+    const cells = [];
+    for (let i = 0; i < month.firstWeekday; i++) cells.push(null);
+    for (let day = 1; day <= month.days; day++) cells.push(day);
+    while (cells.length % 7) cells.push(null);
+  %>
+  <% for (let r = 0; r < cells.length; r += 7) { %>
+  <div class="month-row" role="row">
+    <% cells.slice(r, r+7).forEach(function(day){
+         const ymd = day ? month.first.slice(0,8) + String(day).padStart(2,'0') : null;
+         const evs = day ? events.filter(e => e.event_date === ymd) : [];
+    %>
+      <div role="cell" class="day<%= !day ? ' day-empty' : '' %><%= ymd === today ? ' day-today' : '' %><%= evs.length ? ' has-events' : '' %>">
+        <% if (day) { %><span class="day-num"><%= day %></span>
+          <% evs.forEach(function(e){ %>
+            <a class="day-event<%= e.cancelled ? ' is-cancelled' : '' %><%= e.st ? ' st-' + e.st.key : '' %>" href="<%= eventBase %><%= e.id %><%= typeof eventSuffix !== 'undefined' ? eventSuffix : '' %>" title="<%= e.title %>">
+              <% if (e.start_time) { %><span class="t"><%= e.start_time %></span><% } %> <%= e.title %><% if (e.cancelled) { %> (cancelado)<% } %>
+            </a>
+          <% }) %>
+        <% } %>
+      </div>
+    <% }) %>
+  </div>
+  <% } %>
+</div>

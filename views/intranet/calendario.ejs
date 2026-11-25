@@ -1,0 +1,21 @@
+<%- include('../partials/intranet-top') %>
+<div class="page-head">
+  <h1>Calendário</h1>
+  <div class="segmented" role="tablist">
+    <a role="tab" class="<%= view === 'mes' ? 'active' : '' %>" href="?visao=mes">Mês</a>
+    <a role="tab" class="<%= view === 'lista' ? 'active' : '' %>" href="?visao=lista">Lista</a>
+  </div>
+</div>
+<% if (view === 'mes') { %>
+  <%- include('../partials/month-grid', { eventBase: '/intranet/calendario/' }) %>
+  <% if (events.length) { %>
+    <h2 class="mt">Eventos do mês</h2>
+    <ul class="event-list"><% events.forEach(function(e){ %><%- include('../partials/event-item', { e }) %><% }) %></ul>
+  <% } %>
+<% } else { %>
+  <p class="muted"><%= anteriores ? 'Todos os eventos' : 'Próximos eventos' %> · <a href="?visao=lista<%= anteriores ? '' : '&anteriores=1' %>"><%= anteriores ? 'Mostrar só os próximos' : 'Incluir eventos passados' %></a></p>
+  <% if (events.length) { %>
+    <ul class="event-list event-list-big"><% events.forEach(function(e){ %><%- include('../partials/event-item', { e }) %><% }) %></ul>
+  <% } else { %><p class="empty">Nenhum evento programado.</p><% } %>
+<% } %>
+<%- include('../partials/intranet-bottom') %>

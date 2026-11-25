@@ -1,0 +1,16 @@
+<article class="post-card<%= p.priority ? ' is-priority' : '' %>">
+  <% if (p.cover_file_id) { %><a href="/intranet/informativos/<%= p.id %>" class="post-cover" tabindex="-1"><img src="/arquivos/<%= p.cover_file_id %>" alt="" loading="lazy"></a><% } %>
+  <div class="post-body">
+    <p class="meta">
+      <% if (p.priority) { %><span class="badge badge-priority">Aviso prioritário</span><% } %>
+      <% if (p.category_name) { %><span class="badge"><%= p.category_name %></span><% } %>
+      <span><%= d.fmtDate(p.starts_at) %></span>
+    </p>
+    <h3><a href="/intranet/informativos/<%= p.id %>"><%= p.title %></a></h3>
+    <% if (p.summary) { %><p><%= p.summary %></p><% } %>
+    <% if (p.requires_ack) { %>
+      <% if (p.confirmed_at) { %><p class="ack ack-ok">✓ Leitura confirmada em <%= d.fmtDateTime(p.confirmed_at) %></p>
+      <% } else { %><p class="ack ack-pending">● Confirmação de leitura pendente</p><% } %>
+    <% } %>
+  </div>
+</article>

@@ -1,0 +1,26 @@
+<%- include('../partials/intranet-top') %>
+<h1>Meus dados</h1>
+<div class="grid-2">
+  <section class="card">
+    <dl class="facts">
+      <div><dt>Nome</dt><dd><%= user.name %></dd></div>
+      <div><dt>E-mail</dt><dd><%= user.email %></dd></div>
+      <div><dt>Filial</dt><dd><%= info.branch_name || '—' %></dd></div>
+      <div><dt>Setor</dt><dd><%= info.sector_name || '—' %></dd></div>
+      <div><dt>Perfil</dt><dd><%= ROLE_LABELS[user.role] %></dd></div>
+    </dl>
+    <p class="muted small">Para corrigir nome, filial ou setor, fale com a equipe de TI.</p>
+  </section>
+  <section class="card">
+    <h2>Alterar senha</h2>
+    <% if (error) { %><div class="alert alert-erro"><%= error %></div><% } %>
+    <form method="post" action="/intranet/perfil/senha" class="form">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <label>Senha atual<input type="password" name="atual" autocomplete="current-password" required></label>
+      <label>Nova senha<input type="password" name="nova" minlength="8" autocomplete="new-password" required></label>
+      <label>Repita a nova senha<input type="password" name="confirmacao" minlength="8" autocomplete="new-password" required></label>
+      <button class="btn btn-primary" type="submit">Salvar nova senha</button>
+    </form>
+  </section>
+</div>
+<%- include('../partials/intranet-bottom') %>

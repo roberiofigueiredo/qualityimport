@@ -1,0 +1,71 @@
+<%- include('../partials/intranet-top') %>
+<p><a href="/admin/usuarios">← Usuários</a></p>
+<div class="page-head">
+  <h1><%= target ? target.name : 'Cadastrar colaborador' %></h1>
+  <% if (target) { %><span class="status status-u-<%= target.status %>"><%= STATUS_LABELS[target.status] %></span><% } %>
+</div>
+<% if (error) { %><div class="alert alert-erro" role="alert"><%= error %></div><% } %>
+<% if (typeof linkInfo !== 'undefined' && linkInfo) { %>
+  <div class="alert alert-info">
+    <p><strong>O envio de e-mail (SMTP) não está configurado.</strong> Repasse este link para a pessoa <%= linkInfo.kind === 'convite' ? 'ativar o acesso' : 'criar uma nova senha' %>:</p>
+    <p><input type="text" readonly value="<%= linkInfo.link %>" class="copy-field" data-copy></p>
+  </div>
+<% } %>
+<div class="form-grid">
+  <div class="form-main">
+    <form method="post" action="/admin/usuarios<%= target ? '/' + target.id : '' %>" class="form card">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <div class="grid-2">
+        <label>Nome completo *<input type="text" name="nome" value="<%= form.nome || '' %>" required></label>
+        <label>E-mail *<input type="email" name="email" value="<%= form.email || '' %>" required></label>
+        <label>Filial *<select name="filial" required><option value="">Selecione</option><% branches.forEach(function(b){ %><option value="<%= b.id %>" <%= Number(form.filial) === b.id ? 'selected' : '' %>><%= b.name %><%= b.active ? '' : ' (inativa)' %></option><% }) %></select></label>
+        <label>Setor *<select name="setor" required><option value="">Selecione</option><% sectors.forEach(function(s){ %><option value="<%= s.id %>" <%= Number(form.setor) === s.id ? 'selected' : '' %>><%= s.name %></option><% }) %></select></label>
+      </div>
+      <fieldset class="field">
+        <legend>Perfil de permissão *</legend>
+        <label class="radio"><input type="radio" name="perfil" value="colaborador" <%= form.perfil === 'colaborador' ? 'checked' : '' %>> <strong>Colaborador</strong> — consulta informativos, galerias e calendário; confirma leituras.</label>
+        <label class="radio"><input type="radio" name="perfil" value="marketing" <%= form.perfil === 'marketing' ? 'checked' : '' %>> <strong>Marketing</strong> — tudo do colaborador + painel editorial (informativos, álbuns e eventos). Sem acesso à gestão de usuários.</label>
+        <label class="radio"><input type="radio" name="perfil" value="ti" <%= form.perfil === 'ti' ? 'checked' : '' %>> <strong>Administrador de TI</strong> — gerencia usuários, perfis, filiais, setores, todo o conteúdo e o histórico.</label>
+      </fieldset>
+      <% if (!target) { %>
+        <label class="check"><input type="checkbox" name="convite" value="1" <%= form.convite ? 'checked' : '' %>> Enviar convite agora (libera o acesso: a pessoa cria a própria senha pelo link)</label>
+      <% } %>
+      <div class="actions-bar"><button class="btn btn-primary" type="submit"><%= target ? 'Salvar alterações' : 'Cadastrar' %></button></div>
+    </form>
+  </div>
+  <% if (target) { %>
+  <aside class="form-side">
+    <section class="card">
+      <h2>Acesso</h2>
+      <dl class="facts small">
+        <div><dt>Cadastrado em</dt><dd><%= d.fmtDateTime(target.created_at) %></dd></div>
+        <div><dt>Último acesso</dt><dd><%= target.last_login_at ? d.fmtDateTime(target.last_login_at) : '—' %></dd></div>
+        <div><dt>Sessões abertas</dt><dd><%= sessions %></dd></div>
+        <% if (target.deactivated_at) { %><div><dt>Desativado em</dt><dd><%= d.fmtDateTime(target.deactivated_at) %></dd></div><% } %>
+      </dl>
+      <div class="stack">
+      <% if (target.status === 'convidado') { %>
+        <form method="post" action="/admin/usuarios/<%= target.id %>/convite"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn-secondary btn-block" type="submit">Enviar convite novamente</button></form>
+      <% } %>
+      <% if (target.status === 'ativo') { %>
+        <form method="post" action="/admin/usuarios/<%= target.id %>/redefinir-senha"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn-secondary btn-block" type="submit">Iniciar redefinição de senha</button></form>
+      <% } %>
+      <% if (target.status !== 'desativado') { %>
+        <% if (target.id !== user.id) { %><a class="btn btn-danger-ghost btn-block" href="/admin/usuarios/<%= target.id %>/desativar">Desativar conta</a><% } %>
+      <% } else { %>
+        <form method="post" action="/admin/usuarios/<%= target.id %>/reativar"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn-secondary btn-block" type="submit">Reativar conta</button></form>
+      <% } %>
+      </div>
+    </section>
+    <% if (history.length) { %>
+    <section class="card">
+      <h2>Histórico</h2>
+      <ul class="history">
+        <% history.forEach(function(l){ %><li><strong><%= ACTION_LABELS[l.action] || l.action %></strong><br><span class="muted small"><%= d.fmtDateTime(l.created_at) %> · por <%= l.actor || 'sistema' %></span></li><% }) %>
+      </ul>
+    </section>
+    <% } %>
+  </aside>
+  <% } %>
+</div>
+<%- include('../partials/intranet-bottom') %>

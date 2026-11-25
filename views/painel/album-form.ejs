@@ -1,0 +1,63 @@
+<%- include('../partials/intranet-top') %>
+<p><a href="/painel/galeria">← Galeria de fotos</a></p>
+<div class="page-head">
+  <h1><%= title %></h1>
+  <% if (st) { %><div>Status: <%- include('../partials/status', { st }) %></div><% } %>
+</div>
+<% if (error) { %><div class="alert alert-erro" role="alert"><%= error %></div><% } %>
+<form method="post" action="/painel/galeria<%= row ? '/' + row.id : '' %>" enctype="multipart/form-data" class="form" data-unsaved>
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <div class="form-grid">
+    <div class="form-main">
+      <label>Título *<input type="text" name="titulo" value="<%= form.titulo %>" required maxlength="200"></label>
+      <label>Descrição<textarea name="descricao" rows="3"><%= form.descricao %></textarea></label>
+      <label>Data do álbum *<input type="date" name="data" value="<%= form.data %>" required></label>
+      <div class="field dropzone" data-dropzone>
+        <span class="label"><%= row ? 'Adicionar mais fotos' : 'Fotos' %></span>
+        <input type="file" name="fotos" accept="image/jpeg,image/png,image/webp,image/gif" multiple data-photo-input>
+        <p class="hint">Você pode selecionar várias fotos de uma vez (até 50 por envio, 15 MB cada). Depois de salvar, defina a capa, as legendas e a ordem logo abaixo.</p>
+        <div class="upload-preview" data-upload-preview></div>
+      </div>
+    </div>
+    <div class="form-side">
+      <%- include('../partials/audience-fields') %>
+    </div>
+  </div>
+  <%- include('../partials/publish-fields', { archiveUrl: row ? '/painel/galeria/' + row.id + '/arquivar' : '' }) %>
+</form>
+
+<% if (row) { %>
+<section id="fotos" class="block">
+  <h2>Fotos do álbum (<%= photos.length %>)</h2>
+  <% if (photos.length) { %>
+  <form method="post" action="/painel/galeria/<%= row.id %>/fotos/organizar" class="form">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <p class="hint">Marque a capa, escreva as legendas e ajuste a ordem pelas setas ou pelo número. Clique em “Salvar fotos” para gravar.</p>
+    <ol class="photo-admin">
+      <% photos.forEach(function(ph, i){ %>
+      <li id="foto-<%= ph.id %>">
+        <img src="/arquivos/<%= ph.file_id %>" alt="" loading="lazy">
+        <div class="photo-fields">
+          <label class="radio"><input type="radio" name="capa" value="<%= ph.id %>" <%= row.cover_photo_id === ph.id ? 'checked' : '' %>> Capa do álbum</label>
+          <label>Legenda<input type="text" name="legenda_<%= ph.id %>" value="<%= ph.caption || '' %>" maxlength="300"></label>
+          <div class="photo-order">
+            <label>Ordem<input type="number" name="ordem_<%= ph.id %>" value="<%= i + 1 %>" min="1" class="input-sm"></label>
+            <button class="btn btn-ghost btn-sm" type="submit" formaction="/painel/galeria/<%= row.id %>/fotos/<%= ph.id %>/mover" name="direcao" value="subir" <%= i === 0 ? 'disabled' : '' %> aria-label="Mover para cima">↑</button>
+            <button class="btn btn-ghost btn-sm" type="submit" formaction="/painel/galeria/<%= row.id %>/fotos/<%= ph.id %>/mover" name="direcao" value="descer" <%= i === photos.length - 1 ? 'disabled' : '' %> aria-label="Mover para baixo">↓</button>
+            <label class="check small danger"><input type="checkbox" name="remover" value="<%= ph.id %>"> Remover</label>
+          </div>
+        </div>
+      </li>
+      <% }) %>
+    </ol>
+    <div class="actions-bar"><button class="btn btn-primary" type="submit">Salvar fotos</button></div>
+  </form>
+  <% } %>
+  <form method="post" action="/painel/galeria/<%= row.id %>/fotos" enctype="multipart/form-data" class="form inline-upload">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>Enviar mais fotos agora<input type="file" name="fotos" accept="image/*" multiple required></label>
+    <button class="btn btn-secondary" type="submit">Enviar fotos</button>
+  </form>
+</section>
+<% } %>
+<%- include('../partials/intranet-bottom') %>

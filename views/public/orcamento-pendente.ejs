@@ -1,0 +1,17 @@
+<%- include('../partials/head') %>
+<body class="simple">
+<main class="wrap page narrow">
+  <a class="brand" href="/"><%- include('../partials/logo') %></a>
+  <section class="card">
+    <h1>Solicitar orçamento</h1>
+    <p>O número de WhatsApp para orçamentos<%= branch ? ' da loja ' + branch.name : '' %> está <%- include('../partials/pendente') %>.</p>
+    <% if (branch && branch.phone) { %><p>Enquanto isso, ligue para a loja: <a href="<%= h.telLink(branch.phone) %>"><strong><%= branch.phone %></strong></a></p><% } %>
+    <% const others = branches.filter(b => b.whatsapp); if (others.length) { %>
+      <p>Você também pode pedir o orçamento em outra loja:</p>
+      <ul><% others.forEach(function(b){ %><li><a href="/orcamento?filial=<%= b.id %>"><%= b.name %></a></li><% }) %></ul>
+    <% } %>
+    <p><a class="btn btn-primary" href="/#lojas">Ver lojas e telefones</a></p>
+  </section>
+</main>
+</body>
+</html>

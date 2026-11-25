@@ -1,0 +1,6 @@
+<%- include('../partials/intranet-top') %>
+<h1>Galeria de fotos</h1>
+<% if (albums.length) { %>
+  <div class="album-grid"><% albums.forEach(function(a){ %><%- include('../partials/album-card', { a }) %><% }) %></div>
+<% } else { %><p class="empty">Nenhum álbum publicado ainda.</p><% } %>
+<%- include('../partials/intranet-bottom') %>

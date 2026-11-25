@@ -1,0 +1,43 @@
+<%- include('../partials/intranet-top') %>
+<h1>Configurações do site público</h1>
+<p class="muted">Campos deixados em branco aparecem no site como “Pendente de cadastro”. Endereços e telefones de cada loja ficam em <a href="/admin/filiais">Filiais</a>.</p>
+<form method="post" action="/admin/configuracoes" enctype="multipart/form-data" class="form">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <section class="card">
+    <h2>Identidade</h2>
+    <div class="grid-2">
+      <label>Nome da empresa<input type="text" name="company_name" value="<%= s.company_name %>"></label>
+      <label>CNPJ<input type="text" name="cnpj" value="<%= s.cnpj %>"></label>
+    </div>
+    <label>Frase de destaque (topo do site)<input type="text" name="slogan" value="<%= s.slogan %>" maxlength="160"></label>
+    <label>Apresentação da empresa<textarea name="about_text" rows="4"><%= s.about_text %></textarea></label>
+    <div class="grid-2">
+      <div class="field"><span class="label">Logomarca oficial</span>
+        <% if (s.logo_file_id) { %><img class="thumb-preview" src="/arquivos/<%= s.logo_file_id %>" alt="Logomarca atual"><label class="check"><input type="checkbox" name="remover_logo" value="1"> Remover</label><% } else { %><p><%- include('../partials/pendente') %> <span class="muted small">(o site usa um logotipo provisório)</span></p><% } %>
+        <input type="file" name="logo" accept="image/png,image/jpeg,image/webp"></div>
+      <div class="field"><span class="label">Imagem de destaque do site</span>
+        <% if (s.hero_file_id) { %><img class="thumb-preview" src="/arquivos/<%= s.hero_file_id %>" alt="Imagem atual"><label class="check"><input type="checkbox" name="remover_imagem_destaque" value="1"> Remover</label><% } else { %><p class="muted small">Usando ilustração padrão de autopeças. Recomenda-se uma foto da loja ou do balcão de atendimento.</p><% } %>
+        <input type="file" name="imagem_destaque" accept="image/png,image/jpeg,image/webp"></div>
+    </div>
+  </section>
+  <section class="card">
+    <h2>Orçamento e contato</h2>
+    <div class="grid-2">
+      <label>WhatsApp comercial (orçamentos)<input type="tel" name="whatsapp_number" value="<%= s.whatsapp_number %>" placeholder="(00) 90000-0000"></label>
+      <label>Telefone geral<input type="tel" name="contact_phone" value="<%= s.contact_phone %>"></label>
+    </div>
+    <label>Mensagem inicial do WhatsApp<input type="text" name="whatsapp_message" value="<%= s.whatsapp_message %>"></label>
+    <p class="hint">Cada loja pode ter o próprio WhatsApp (em Filiais). Sem ele, o botão da loja usa este número geral.</p>
+    <div class="grid-3">
+      <label>E-mail de contato<input type="email" name="contact_email" value="<%= s.contact_email %>"></label>
+      <label>Instagram (link)<input type="url" name="instagram_url" value="<%= s.instagram_url %>" placeholder="https://instagram.com/..."></label>
+      <label>Facebook (link)<input type="url" name="facebook_url" value="<%= s.facebook_url %>" placeholder="https://facebook.com/..."></label>
+    </div>
+  </section>
+  <section class="card">
+    <h2>Envio de e-mails</h2>
+    <p><%= smtp ? 'SMTP configurado: convites e redefinições de senha são enviados por e-mail.' : 'SMTP não configurado: convites e links de senha aparecem para a TI em “E-mails”, para repasse manual. Configure as variáveis SMTP_* no servidor (veja o README).' %></p>
+  </section>
+  <div class="actions-bar"><button class="btn btn-primary" type="submit">Salvar configurações</button><a class="btn btn-ghost" href="/" target="_blank">Ver site público</a></div>
+</form>
+<%- include('../partials/intranet-bottom') %>

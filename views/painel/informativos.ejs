@@ -1,0 +1,23 @@
+<%- include('../partials/intranet-top') %>
+<div class="page-head"><h1>Informativos</h1><a class="btn btn-primary" href="/painel/informativos/novo">+ Novo informativo</a></div>
+<%- include('../partials/list-filters') %>
+<div class="table-wrap">
+<table class="table">
+  <thead><tr><th>Título</th><th>Categoria</th><th>Público</th><th>Status</th><th>Exibição</th><th>Leituras</th><th><span class="sr-only">Ações</span></th></tr></thead>
+  <tbody>
+  <% rows.forEach(function(r){ %>
+    <tr>
+      <td data-label="Título"><a href="/painel/informativos/<%= r.id %>/editar"><strong><%= r.title %></strong></a><% if (r.priority) { %> <span class="badge badge-priority">Prioritário</span><% } %><br><span class="muted small">Atualizado por <%= r.updated_by_name %> em <%= d.fmtDateTime(r.updated_at) %></span></td>
+      <td data-label="Categoria"><%= r.category_name || '—' %></td>
+      <td data-label="Público"><%= r.audienceText %></td>
+      <td data-label="Status"><%- include('../partials/status', { st: r.st }) %></td>
+      <td data-label="Exibição"><%= r.starts_at ? d.fmtDateTime(r.starts_at) : '—' %><% if (r.ends_at) { %><br><span class="muted small">até <%= d.fmtDateTime(r.ends_at) %></span><% } %></td>
+      <td data-label="Leituras"><% if (r.requires_ack) { %><a href="/painel/informativos/<%= r.id %>/leituras"><%= r.confirmed %> de <%= r.audience_size %></a><% } else { %>—<% } %></td>
+      <td class="row-actions"><a href="/painel/informativos/<%= r.id %>/editar">Editar</a> <a href="/painel/informativos/<%= r.id %>/previa">Pré-visualizar</a></td>
+    </tr>
+  <% }) %>
+  </tbody>
+</table>
+<% if (!rows.length) { %><p class="empty">Nenhum informativo encontrado. <a href="/painel/informativos/novo">Criar o primeiro</a>.</p><% } %>
+</div>
+<%- include('../partials/intranet-bottom') %>

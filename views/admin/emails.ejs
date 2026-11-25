@@ -1,0 +1,13 @@
+<%- include('../partials/intranet-top') %>
+<h1>E-mails enviados</h1>
+<p class="muted"><%= smtp ? 'O SMTP está configurado; esta lista é o registro dos envios.' : 'O SMTP não está configurado. As mensagens abaixo não saíram por e-mail: copie o link e repasse ao colaborador.' %></p>
+<div class="mail-list">
+<% rows.forEach(function(m){ %>
+  <details class="card">
+    <summary><strong><%= m.subject %></strong> → <%= m.to_email %> <span class="muted small">· <%= d.fmtDateTime(m.created_at) %> · <%= m.delivered ? 'enviado' : (m.error ? 'falhou' : 'não enviado') %></span></summary>
+    <pre class="mail-body"><%= m.body %></pre>
+  </details>
+<% }) %>
+<% if (!rows.length) { %><p class="empty">Nenhum e-mail registrado.</p><% } %>
+</div>
+<%- include('../partials/intranet-bottom') %>

@@ -1,0 +1,7 @@
+<% if (preview) { %>
+<div class="preview-banner" role="note">
+  <strong>Pré-visualização</strong> — é assim que os colaboradores verão este conteúdo.
+  Status: <%- include('status', { st: preview.st }) %> · Público: <%= preview.audience %>
+  <a class="btn btn-sm btn-light" href="<%= preview.edit %>">Voltar para a edição</a>
+</div>
+<% } %>

@@ -1,0 +1,22 @@
+<%- include('../partials/intranet-top') %>
+<% if (typeof preview !== 'undefined') { %><%- include('../partials/preview-banner') %><% } %>
+<p><a href="/intranet/calendario">← Calendário</a></p>
+<article class="article">
+  <% if (event.cancelled) { %>
+    <div class="alert alert-erro" role="alert"><strong>Evento cancelado.</strong><% if (event.cancel_reason) { %> Motivo: <%= event.cancel_reason %><% } %></div>
+  <% } %>
+  <h1 class="<%= event.cancelled ? 'strike' : '' %>"><%= event.title %></h1>
+  <dl class="facts">
+    <div><dt>Data</dt><dd><%= d.fmtLongDate(event.event_date) %></dd></div>
+    <div><dt>Horário</dt><dd><%= d.fmtTimeRange(event.start_time, event.end_time) %></dd></div>
+    <div><dt>Local</dt><dd><%= event.location || 'Não informado' %></dd></div>
+  </dl>
+  <% if (event.description) { %><p class="pre"><%= event.description %></p><% } %>
+  <% if (changes.length) { %>
+  <section class="changes">
+    <p class="changes-title">Mudanças neste evento</p>
+    <ul><% changes.forEach(function(c){ %><li><%= c.description %> <span class="muted small">(<%= d.fmtDateTime(c.created_at) %>)</span></li><% }) %></ul>
+  </section>
+  <% } %>
+</article>
+<%- include('../partials/intranet-bottom') %>

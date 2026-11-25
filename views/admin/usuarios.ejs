@@ -1,0 +1,27 @@
+<%- include('../partials/intranet-top') %>
+<div class="page-head"><h1>Usuários</h1><a class="btn btn-primary" href="/admin/usuarios/novo">+ Cadastrar colaborador</a></div>
+<form class="filters" method="get" role="search">
+  <label>Nome ou e-mail<input type="search" name="q" value="<%= f.q %>"></label>
+  <label>Perfil<select name="perfil"><option value="">Todos</option><% Object.entries(ROLE_LABELS).forEach(function([k,v]){ %><option value="<%= k %>" <%= f.perfil === k ? 'selected' : '' %>><%= v %></option><% }) %></select></label>
+  <label>Filial<select name="filial"><option value="">Todas</option><% branches.forEach(function(b){ %><option value="<%= b.id %>" <%= f.filial === b.id ? 'selected' : '' %>><%= b.name %></option><% }) %></select></label>
+  <label>Setor<select name="setor"><option value="">Todos</option><% sectors.forEach(function(s){ %><option value="<%= s.id %>" <%= f.setor === s.id ? 'selected' : '' %>><%= s.name %></option><% }) %></select></label>
+  <label>Situação<select name="situacao"><option value="">Todas</option><% Object.entries(STATUS_LABELS).forEach(function([k,v]){ %><option value="<%= k %>" <%= f.situacao === k ? 'selected' : '' %>><%= v %></option><% }) %></select></label>
+  <div class="filters-actions"><button class="btn btn-primary" type="submit">Filtrar</button><a class="btn btn-ghost" href="/admin/usuarios">Limpar</a></div>
+</form>
+<p class="muted small"><%= users.length %> usuário(s)</p>
+<div class="table-wrap">
+<table class="table">
+  <thead><tr><th>Nome</th><th>Perfil</th><th>Filial</th><th>Setor</th><th>Situação</th><th>Último acesso</th></tr></thead>
+  <tbody><% users.forEach(function(u){ %>
+    <tr class="<%= u.status === 'desativado' ? 'is-muted' : '' %>">
+      <td data-label="Nome"><a href="/admin/usuarios/<%= u.id %>"><strong><%= u.name %></strong></a><br><span class="muted small"><%= u.email %></span></td>
+      <td data-label="Perfil"><span class="role role-<%= u.role %>"><%= ROLE_LABELS[u.role] %></span></td>
+      <td data-label="Filial"><%= u.branch_name || '—' %></td>
+      <td data-label="Setor"><%= u.sector_name || '—' %></td>
+      <td data-label="Situação"><span class="status status-u-<%= u.status %>"><%= STATUS_LABELS[u.status] %></span></td>
+      <td data-label="Último acesso"><%= u.last_login_at ? d.fmtDateTime(u.last_login_at) : '—' %></td>
+    </tr>
+  <% }) %></tbody>
+</table>
+</div>
+<%- include('../partials/intranet-bottom') %>
