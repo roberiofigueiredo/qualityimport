@@ -96,7 +96,7 @@
       <p class="muted center small" data-store-count><%= branches.length %> de <%= totalBranches %> loja(s)</p>
       <div class="stores">
         <% branches.forEach(function(b){
-             const mapUrl = b.map_url || (b.address ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(b.address + (b.city ? ', ' + b.city : '')) : '');
+             const mapUrl = b.map_url || (b.address ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(b.address + (b.city && !b.address.includes(b.city) ? ', ' + b.city : '')) : '');
         %>
         <article class="store-card" data-store="<%= [b.name, b.city, b.address].join(' ').toLowerCase() %>" data-city="<%= b.city || '' %>" id="loja-<%= b.id %>">
           <h3><%= b.name %><% if (b.city) { %> <span class="muted">· <%= b.city %></span><% } %></h3>
